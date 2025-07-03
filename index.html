@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة تكاليف السيارة المستعملة من كوريا</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .car-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #4CAF50;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .form-group input:invalid {
+            border-color: #f44336;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .btn-outline:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .result-section {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+        }
+
+        .result-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .total-cost {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            counter-reset: total;
+        }
+
+        .cost-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .cost-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .cost-item-title {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .cost-item-value {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group .currency {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            padding-left: 50px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .form-section.completed {
+            border-color: #4CAF50;
+            background: #f8fff8;
+        }
+
+        .input-error {
+            border-color: #f44336 !important;
+            background: #fff3f3;
+        }
+
+        /* Styles for car price display section */
+        .price-selector {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid #f0f0f0;
+        }
+
+        .selectors {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .price-display {
+            text-align: center;
+            padding: 18px 15px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            margin-top: 30px;
+            display: none;
+            animation: fadeInUp 0.5s ease;
+            border: 2px solid #27ae60;
+        }
+
+        .price-display.show {
+            display: block;
+        }
+
+        .price-value {
+            font-size: 1.6em !important;
+            padding: 0 8px;
+            font-weight: bold;
+            color: #27ae60;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .no-price {
+            color: #e74c3c;
+            font-size: 1.5em;
+        }
+
+        .car-info {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-right: 5px solid #3498db;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 25px;
+            box-shadow: 0 4px 16px rgba(39, 174, 96, 0.15);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #219150 0%, #27ae60 100%);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* تصغير حجم عرض السعر وزر استخدام هذا السعر */
+        #copyPriceBtn.copy-btn {
+            font-size: 1em;
+            padding: 10px 22px;
+            margin-top: 10px !important;
+        }
+
+        /* تحسين شكل القوائم المنسدلة */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: #fafafa url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%234CAF50' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 1.2em center/1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 40px 12px 15px;
+            font-size: 1em;
+            color: #333;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        select:focus {
+            border-color: #4CAF50;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.08);
+            outline: none;
+        }
+        select:disabled {
+            background-color: #f3f3f3;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 📦 استعادة البيانات السابقة Button -->
+        <div style="text-align:center; margin: 25px 0 0 0;">
+            <button type="button" class="btn btn-outline" id="restoreDataBtn" style="font-size:1em;">
+                📦 استعادة البيانات السابقة
+            </button>
+        </div>
+        <div class="header">
+            <div class="car-icon">🚗</div>
+            <h1>حاسبة تكاليف السيارة المستعملة</h1>
+            <div class="subtitle">من كوريا الجنوبية</div>
+        </div>
+
+        <div class="content">
+            <!-- قسم اختيار سعر السيارة حسب الجدول -->
+            <div class="price-selector">
+                <div class="section-title">
+                    <i class="fas fa-search-dollar"></i>
+                    تحديد سعر السيارة حسب الجدول
+                </div>
+                
+                <div class="selectors">
+                    <div class="selector-group">
+                        <label for="brand">العلامة التجارية:</label>
+                        <select id="brand" onchange="updateModels()">
+                            <option value="">-- اختر العلامة التجارية --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="selector-group">
+                        <label for="model">الموديل:</label>
+                        <select id="model" disabled onchange="updateYears()">
+                            <option value="">-- اختر الموديل --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="selector-group">
+                        <label for="year">سنة الصنع:</label>
+                        <select id="year" disabled onchange="showPrice()">
+                            <option value="">-- اختر السنة --</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="priceDisplay" class="price-display">
+                    <div class="car-info">
+                        <div style="display: flex; gap: 15px; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 1.2em;">
+                            <span style="font-weight:bold;">نوع السيارة:</span>
+                            <span id="carBrand"></span>
+                            <span style="font-weight:bold;">موديل السيارة:</span>
+                            <span id="carModel"></span>
+                            <span style="font-weight:bold;">سنة الصنع:</span>
+                            <span id="carYear"></span>
+                        </div>
+                    </div>
+                    <p>
+                        <span style="font-size:2.5em; font-weight:bold; color:#27ae60;">السعر:</span>
+                        <span id="priceValue" class="price-value"></span>
+                    </p>
+                    <button id="copyPriceBtn" class="copy-btn" style="margin-top:15px; display:none;" onclick="useTablePrice()">استخدام هذا السعر</button>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="carForm">
+                <div class="form-grid">
+                    <!-- Car Details Section -->
+                    <div class="form-section" id="carSection">
+                        <div class="section-title">
+                            <i class="fas fa-car"></i>
+                            بيانات السيارة
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="carType">نوع السيارة:</label>
+                            <input type="text" id="carType" name="carType" required placeholder="مثال: هيونداي، كيا">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="seats">عدد المقاعد:</label>
+                            <input type="number" id="seats" name="seats" required min="2" max="9" placeholder="من 2 إلى 9">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fuel">نوع الوقود:</label>
+                            <select id="fuel" name="fuel" required>
+                                <option value="">اختر نوع الوقود</option>
+                                <option value="بنزين">⛽ بنزين</option>
+                                <option value="ديزل">🛢️ ديزل</option>
+                                <option value="هايبرد">🔋 هايبرد</option>
+                                <option value="كهربائية">⚡ كهربائية</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="modelYear">الموديل:</label>
+                            <input type="text" id="modelYear" name="modelYear" required placeholder="مثال: 2020، 2019">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="engineSize">حجم المحرك (CC):</label>
+                            <input type="number" id="engineSize" name="engineSize" required min="800" max="8000" placeholder="مثال: 1600">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mileage">المسافة المقطوعة (كم):</label>
+                            <input type="number" id="mileage" name="mileage" required min="0" max="999999" placeholder="مثال: 50000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bodyCondition">حالة الهيكل:</label>
+                            <input type="text" id="bodyCondition" name="bodyCondition" required placeholder="وكالة ، رش باب يمين">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="carSize">حجم السيارة:</label>
+                            <select id="carSize" name="carSize" required>
+                                <option value="">اختر حجم السيارة</option>
+                                <option value="small">🚗 صغيرة (شحن: 5,800 ريال)</option>
+                                <option value="large">🚙 كبيرة (شحن: 6,800 ريال)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Financial Details Section -->
+                    <div class="form-section" id="financialSection">
+                        <div class="section-title">
+                            <i class="fas fa-calculator"></i>
+                            التفاصيل المالية
+                        </div>
+
+                        <div class="form-group">
+                            <label for="krwToUsd">سعر صرف الدولار مقابل الوون الكوري:</label>
+                            <div class="input-group">
+                                <input type="number" id="krwToUsd" name="krwToUsd" required min="1000" max="2000" placeholder="سعر الصرف بعد خصم 10 وون">
+                                <span class="currency">KRW</span>
+                            </div>
+                            <button type="button" class="btn btn-outline" id="fetchExchangeRate" style="margin-top: 10px;">
+                                <i class="fas fa-sync-alt"></i>
+                                جلب سعر الصرف الحالي
+                            </button>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="usdToSar">سعر صرف الريال مقابل الدولار:</label>
+                            <div class="input-group">
+                                <input type="number" id="usdToSar" name="usdToSar" value="3.77" required step="0.01" min="3" max="5">
+                                <span class="currency">SAR</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="carPriceKrw">سعر السيارة بالوون الكوري (بالمليون):</label>
+                            <div class="input-group">
+                                <input type="number" id="carPriceKrw" name="carPriceKrw" required min="1" step="0.01" placeholder="مثال: 25.50">
+                                <span class="currency">مليون KRW</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="carPriceTable">سعر السيارة حسب الجدول:</label>
+                            <div class="input-group">
+                                <input type="number" id="carPriceTable" name="carPriceTable" required min="10000" placeholder="القيمة من جدول الجمارك">
+                                <span class="currency">SAR</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="officeCommission">عمولة المكتب:</label>
+                            <div class="input-group">
+                                <input type="number" id="officeCommission" name="officeCommission" value="2000" required min="0">
+                                <span class="currency">SAR</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customsFees">رسوم التخليص الجمركي:</label>
+                            <div class="input-group">
+                                <input type="number" id="customsFees" name="customsFees" value="1500" required min="0">
+                                <span class="currency">SAR</span>
+                            </div>
+                        </div>
+                        <!-- 💰 رسوم إضافية (اختياري) -->
+                        <div class="form-group">
+                            <label for="personalExtraFee">رسوم إضافية (اختياري):</label>
+                            <div class="input-group">
+                                <input type="number" id="personalExtraFee" name="personalExtraFee" min="0" placeholder="مثال: 500">
+                                <span class="currency">SAR</span>
+                            </div>
+                            <div style="font-size:0.9em; color:#888; margin-top:5px;">
+                                لن تظهر هذه القيمة في الرسالة النهائية. للاستخدام الشخصي فقط.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="result-section">
+                    <div class="result-title">
+                        <i class="fas fa-chart-line"></i>
+                        إجمالي التكلفة
+                    </div>
+                    <div class="total-cost" id="totalCost">0</div>
+                    <div style="font-size: 1.2em; opacity: 0.9;">ريال سعودي</div>
+
+                    <div class="cost-breakdown">
+                        <div class="cost-item">
+                            <div class="cost-item-title">سعر السيارة</div>
+                            <div class="cost-item-value" id="carCostSAR">0 ريال</div>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-item-title">الضريبة والجمارك</div>
+                            <div class="cost-item-value" id="taxCost">0 ريال</div>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-item-title">تكلفة الشحن</div>
+                            <div class="cost-item-value" id="shippingCost">0 ريال</div>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-item-title">الرسوم الإضافية</div>
+                            <div class="cost-item-value" id="additionalFees">0 ريال</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary" id="calculate">
+                        <i class="fas fa-calculator"></i>
+                        حساب التكلفة
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="copyMessage">
+                        <i class="fas fa-copy"></i>
+                        نسخ التفاصيل
+                    </button>
+                    <!-- 📐 نسخ التفاصيل (تقريب إلى أقرب مئة) -->
+                    <button type="button" class="btn btn-secondary" id="copyMessageRounded">
+                        <i class="fas fa-copy"></i>
+                        📐 نسخ التفاصيل (تقريب إلى أقرب مئة)
+                    </button>
+                    <button type="reset" class="btn btn-outline" id="resetForm">
+                        <i class="fas fa-redo"></i>
+                        إعادة تعيين
+                    </button>
+                </div>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div>جاري جلب أسعار الصرف...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات السيارات المحدثة والمكتملة
+const carsData = {
+           // ... بيانات السيارات ...
+
+        "BMW": {
+            "118i": {"2018": 44979, "2019": 53975, "2020": 62971, "2021": 71967, "2022": 80963, "2023": 89959, "2024": 94457},
+            "120i": {"2018": 47346, "2019": 56816, "2020": 66258, "2021": 75755, "2022": 85224, "2023": 94693, "2024": 99428},
+            "140i": {"2018": 48414, "2019": 58096, "2020": 67779, "2021": 77462, "2022": 87145, "2023": 96828, "2024": 101669},
+            "218i": {"2018": 49334, "2019": 59200, "2020": 69067, "2021": 78934, "2022": 88801, "2023": 98668, "2024": 103601},
+            "230i": {"2018": 51800, "2019": 62160, "2020": 72520, "2021": 82881, "2022": 93241, "2023": 103601, "2024": 108781},
+            "240i": {"2018": 56804, "2019": 68165, "2020": 79526, "2021": 90887, "2022": 102248, "2023": 113609, "2024": 119289},
+            "318i": {"2018": 61744, "2019": 74093, "2020": 86442, "2021": 98791, "2022": 111140, "2023": 119549, "2024": 125526},
+            "320i": {"2018": 62394, "2019": 74973, "2020": 87351, "2021": 99830, "2022": 112309, "2023": 124788, "2024": 131027},
+            "330i": {"2018": 73058, "2019": 87670, "2020": 102282, "2021": 116893, "2022": 131505, "2023": 146117, "2024": 153423},
+            "420i": {"2018": 72868, "2019": 87442, "2020": 102016, "2021": 116589, "2022": 131163, "2023": 145737, "2024": 153024},
+            "430i": {"2018": 82346, "2019": 98815, "2020": 115285, "2021": 131754, "2022": 148223, "2023": 164692, "2024": 172927},
+            "440i": {"2018": 98924, "2019": 118709, "2020": 138494, "2021": 158279, "2022": 178064, "2023": 197849, "2024": 207741},
+            "520i": {"2018": 72639, "2019": 87167, "2020": 101695, "2021": 116223, "2022": 130751, "2023": 145279, "2024": 152543},
+            "530i": {"2018": 85123, "2019": 102148, "2020": 119173, "2021": 136198, "2022": 153223, "2023": 170247, "2024": 178759},
+            "550i": {"2018": 170522, "2019": 204626, "2020": 238730, "2021": 272835, "2022": 306939, "2023": 341044, "2024": 358096},
+            "730Li": {"2018": 113818, "2019": 136582, "2020": 159346, "2021": 182109, "2022": 204873, "2023": 227637, "2024": 239019},
+            "735Li": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 270700},
+            "740Li": {"2018": 148904, "2019": 178685, "2020": 208466, "2021": 238247, "2022": 268028, "2023": 297809, "2024": 312699},
+            "750Li": {"2018": 173178, "2019": 207814, "2020": 242450, "2021": 277086, "2022": 311722, "2023": 346357, "2024": 363675},
+            "760Li": {"2018": 206786, "2019": 248143, "2020": 289500, "2021": 330857, "2022": 372214, "2023": 413572, "2024": 434251},
+            "840i": {"2018": 134670, "2019": 161604, "2020": 188538, "2021": 215472, "2022": 242406, "2023": 269341, "2024": 282808},
+            "M2": {"2018": 125911, "2019": 151093, "2020": 176275, "2021": 201457, "2022": 226640, "2023": 251822, "2024": 264413},
+            "M3": {"2018": 134672, "2019": 161606, "2020": 188541, "2021": 215475, "2022": 242410, "2023": 269344, "2024": 282811},
+            "M4": {"2018": 138293, "2019": 165952, "2020": 193610, "2021": 221269, "2022": 248928, "2023": 276586, "2024": 290415},
+            "M40i": {"2018": 98974, "2019": 118768, "2020": 138563, "2021": 158358, "2022": 178153, "2023": 197948, "2024": 207845},
+            "M5": {"2018": 176496, "2019": 211795, "2020": 247094, "2021": 282393, "2022": 317692, "2023": 352992, "2024": 370642},
+            "M8": {"2018": 210112, "2019": 251916, "2020": 293569, "2021": 335222, "2022": 377874, "2023": 420004, "2024": 441004},
+            "M850i": {"2018": 169629, "2019": 203555, "2020": 237481, "2021": 271407, "2022": 305333, "2023": 339259, "2024": 356222},
+            "X1": {"2018": 45486, "2019": 54583, "2020": 63681, "2021": 72778, "2022": 81875, "2023": 90973, "2024": 95522},
+            "X2": {"2018": 46599, "2019": 55919, "2020": 65239, "2021": 74559, "2022": 83879, "2023": 93199, "2024": 97859},
+            "X3": {"2018": 80474, "2019": 96569, "2020": 112664, "2021": 128759, "2022": 144854, "2023": 160949, "2024": 168996},
+            "X4": {"2018": 79440, "2019": 98640, "2020": 137963, "2021": 157672, "2022": 177381, "2023": 197090, "2024": 206945},
+            "X5": {"2018": 113607, "2019": 136329, "2020": 159050, "2021": 181772, "2022": 204493, "2023": 227215, "2024": 238576},
+            "X6": {"2018": 123055, "2019": 147666, "2020": 172277, "2021": 196888, "2022": 221499, "2023": 246111, "2024": 258417},
+            "X7": {"2018": 157006, "2019": 188407, "2020": 219808, "2021": 251210, "2022": 282611, "2023": 314012, "2024": 329713},
+            "Z4": {"2018": 71326, "2019": 85592, "2020": 99857, "2021": 114122, "2022": 128388, "2023": 142653, "2024": 149786}
+        },
+
+        "مرسيدس": {
+"  E300": {"2018": 110323, "2019": 133707, "2020": 155992, "2021": 178277, "2022": 200562, "2023": 222846, "2024": 233988},
+" A35": {"2018": 81448, "2019": 97737, "2020": 114026, "2021": 130316, "2022": 146606, "2023": 162895, "2024": 171040},
+" A45": {"2018": 108016, "2019": 129618, "2020": 151222, "2021": 172826, "2022": 194428, "2023": 216032, "2024": 226834},
+" AMG  GT43": {"2018": 204903, "2019": 245883, "2020": 286863, "2021": 327843, "2022": 368824, "2023": 409805, "2024": 430295},
+" C180": {"2018": 63526, "2019": 76231, "2020": 88936, "2021": 101642, "2022": 114347, "2023": 127052, "2024": 133405},
+" C63": {"2018": 163512, "2019": 196214, "2020": 228916, "2021": 261618, "2022": 294321, "2023": 327023, "2024": 343374},
+" CLA180": {"2018": 62388, "2019": 74866, "2020": 87343, "2021": 99821, "2022": 112298, "2023": 124776, "2024": 131015},
+" CLA200": {"2018": 64449, "2019": 77339, "2020": 90229, "2021": 103119, "2022": 116009, "2023": 128898, "2024": 135343},
+" CLA350": {"2018": 123412, "2019": 148093, "2020": 172776, "2021": 197459, "2022": 222141, "2023": 246823, "2024": 259164},
+" CLS 400": {"2018": 136650, "2019": 163980, "2020": 191310, "2021": 218640, "2022": 245970, "2023": 273300, "2024": 286965},
+" CLS 450": {"2018": 143842, "2019": 172610, "2020": 201379, "2021": 230147, "2022": 258916, "2023": 287684, "2024": 302068},
+" CLS 53": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 391168, "2024": 0},
+" E200": {"2018": 95291, "2019": 114348, "2020": 133407, "2021": 152465, "2022": 171523, "2023": 190581, "2024": 200110},
+" E320": {"2018": 104521, "2019": 125425, "2020": 146329, "2021": 167234, "2022": 188138, "2023": 209042, "2024": 219494},
+" F200": {"2018": 92980, "2019": 111576, "2020": 130173, "2021": 148769, "2022": 167365, "2023": 185961, "2024": 195259},
+" G500": {"2018": 224877, "2019": 269853, "2020": 314829, "2021": 359804, "2022": 404780, "2023": 449755, "2024": 472243},
+" G550": {"2018": 224877, "2019": 269853, "2020": 314829, "2021": 359804, "2022": 404780, "2023": 449755, "2024": 472243},
+" G63": {"2018": 287810, "2019": 345373, "2020": 402935, "2021": 460498, "2022": 518059, "2023": 575621, "2024": 604402},
+" G700  برابوس": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+" G800  برابوس": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+" GLB200": {"2018": 74279, "2019": 89135, "2020": 103991, "2021": 118847, "2022": 133703, "2023": 148559, "2024": 155987},
+" GLB250": {"2018": 88914, "2019": 106697, "2020": 124480, "2021": 142263, "2022": 160046, "2023": 177829, "2024": 186720},
+" GLC200": {"2018": 93565, "2019": 112279, "2020": 130992, "2021": 149705, "2022": 168418, "2023": 187131, "2024": 196488},
+" GLC250": {"2018": 99746, "2019": 119695, "2020": 139644, "2021": 159594, "2022": 179543, "2023": 199492, "2024": 209467},
+" GLC300": {"2018": 115540, "2019": 138648, "2020": 161756, "2021": 184864, "2022": 207972, "2023": 231081, "2024": 242635},
+" GLC350": {"2018": 119184, "2019": 143021, "2020": 166858, "2021": 190694, "2022": 214531, "2023": 238368, "2024": 250286},
+" GLE43": {"2018": 140309, "2019": 168371, "2020": 196432, "2021": 224494, "2022": 252556, "2023": 280618, "2024": 294649},
+" GLE450": {"2018": 137416, "2019": 164900, "2020": 192383, "2021": 219866, "2022": 247350, "2023": 274833, "2024": 288575},
+" GLE53 ": {"2018": 178247, "2019": 213897, "2020": 249546, "2021": 285196, "2022": 320845, "2023": 356495, "2024": 374319},
+" GLE63": {"2018": 215123, "2019": 258148, "2020": 301173, "2021": 344197, "2022": 387222, "2023": 430247, "2024": 451759},
+" S680  MAYBACH ": {"2018": 384702, "2019": 461643, "2020": 538583, "2021": 615524, "2022": 692464, "2023": 769405, "2024": 807875},
+"311CDI": {"2018": 70800, "2019": 84960, "2020": 99120, "2021": 113280, "2022": 127440, "2023": 141600, "2024": 148680},
+"316CDI": {"2018": 97461, "2019": 113404, "2020": 123704, "2021": 129495, "2022": 138948, "2023": 149191, "2024": 162435},
+"A180": {"2018": 54262, "2019": 65115, "2020": 75698, "2021": 86820, "2022": 97673, "2023": 108525, "2024": 113951},
+"A200": {"2018": 57118, "2019": 68541, "2020": 79965, "2021": 91389, "2022": 102812, "2023": 114237, "2024": 119949},
+"A250": {"2018": 74741, "2019": 89689, "2020": 104637, "2021": 119585, "2022": 134533, "2023": 149481, "2024": 156955},
+"B200": {"2018": 79244, "2019": 95091, "2020": 110940, "2021": 126790, "2022": 142637, "2023": 158487, "2024": 166411},
+"C200": {"2018": 74350, "2019": 91788, "2020": 116779, "2021": 133462, "2022": 150144, "2023": 166828, "2024": 175169},
+"C300": {"2018": 88366, "2019": 106039, "2020": 123712, "2021": 141386, "2022": 159059, "2023": 176732, "2024": 185569},
+"C350": {"2018": 92784, "2019": 111341, "2020": 129898, "2021": 148455, "2022": 167012, "2023": 186509, "2024": 195834},
+"C43": {"2018": 128607, "2019": 154328, "2020": 180050, "2021": 205771, "2022": 231492, "2023": 257214, "2024": 270075},
+"CLA250": {"2018": 68380, "2019": 80592, "2020": 95368, "2021": 124215, "2022": 139742, "2023": 155269, "2024": 163032},
+"CLA35": {"2018": 86517, "2019": 103820, "2020": 121124, "2021": 138427, "2022": 155730, "2023": 173034, "2024": 181685},
+"CLA45": {"2018": 118511, "2019": 142213, "2020": 165915, "2021": 189617, "2022": 213319, "2023": 237021, "2024": 248872},
+"CLS 350": {"2018": 123465, "2019": 148158, "2020": 172851, "2021": 197544, "2022": 222237, "2023": 246930, "2024": 259276},
+"E300   Coupe": {"2018": 126079, "2019": 151294, "2020": 176510, "2021": 201726, "2022": 226941, "2023": 252157, "2024": 264765},
+"E350": {"2018": 116994, "2019": 140392, "2020": 163791, "2021": 187190, "2022": 210589, "2023": 233988, "2024": 245687},
+"E400": {"2018": 122844, "2019": 147412, "2020": 171981, "2021": 196550, "2022": 221118, "2023": 245687, "2024": 257971},
+"E43": {"2018": 144192, "2019": 173031, "2020": 201869, "2021": 230708, "2022": 259546, "2023": 288385, "2024": 302804},
+"E450": {"2018": 128407, "2019": 154088, "2020": 179770, "2021": 205451, "2022": 231132, "2023": 256814, "2024": 374655},
+"E53": {"2018": 150797, "2019": 180956, "2020": 211116, "2021": 241275, "2022": 271434, "2023": 301594, "2024": 316674},
+"E63": {"2018": 234076, "2019": 280890, "2020": 327705, "2021": 374520, "2022": 421336, "2023": 468151, "2024": 491559},
+"EQS450": {"2018": 0, "2019": 0, "2020": 0, "2021": 350869, "2022": 394727, "2023": 438586, "2024": 460515},
+"EQS53": {"2018": 0, "2019": 0, "2020": 0, "2021": 336288, "2022": 378324, "2023": 420360, "2024": 441378},
+"EQS580": {"2018": 0, "2019": 0, "2020": 0, "2021": 389855, "2022": 438586, "2023": 487318, "2024": 511684},
+"G65": {"2018": 458190, "2019": 549828, "2020": 641466, "2021": 673539, "2022": 769759, "2023": 865979, "2024": 962199},
+"G650   MAYBACH": {"2018": 1034864, "2019": 1138350, "2020": 1241837, "2021": 1448809, "2022": 1655782, "2023": 1862755, "2024": 2069728},
+"G900  برابوس": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"GLA200": {"2018": 64626, "2019": 77552, "2020": 90477, "2021": 103402, "2022": 116328, "2023": 129253, "2024": 135716},
+"GLA250": {"2018": 67858, "2019": 81429, "2020": 95001, "2021": 108573, "2022": 122144, "2023": 136116, "2024": 142922},
+"GLA45": {"2018": 110418, "2019": 132502, "2020": 154585, "2021": 176669, "2022": 198753, "2023": 220837, "2024": 231879},
+"GLC43": {"2018": 127213, "2019": 152656, "2020": 178098, "2021": 203541, "2022": 228984, "2023": 254426, "2024": 267147},
+"GLE250": {"2018": 63001, "2019": 75601, "2020": 88202, "2021": 100802, "2022": 113402, "2023": 126003, "2024": 132303},
+"GLE300": {"2018": 114406, "2019": 137287, "2020": 160169, "2021": 183050, "2022": 205931, "2023": 228813, "2024": 240254},
+"GLE350": {"2018": 120428, "2019": 144513, "2020": 168599, "2021": 192684, "2022": 216770, "2023": 240856, "2024": 252899},
+"GLE400": {"2018": 126449, "2019": 151739, "2020": 177029, "2021": 202319, "2022": 227608, "2023": 258099, "2024": 271004},
+"GLE900  برابوس": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"GLS350": {"2018": 123411, "2019": 148093, "2020": 172776, "2021": 197458, "2022": 222140, "2023": 246823, "2024": 259164},
+"GLS450": {"2018": 147837, "2019": 177405, "2020": 206972, "2021": 236540, "2022": 266107, "2023": 295675, "2024": 310459},
+"GLS580": {"2018": 195487, "2019": 234584, "2020": 273681, "2021": 312779, "2022": 351876, "2023": 390974, "2024": 410523},
+"GLS600  MAYBACH": {"2018": 349853, "2019": 419824, "2020": 489795, "2021": 559766, "2022": 629737, "2023": 699707, "2024": 734692},
+"GLS63": {"2018": 189963, "2019": 227956, "2020": 265949, "2021": 303942, "2022": 341935, "2023": 379927, "2024": 398923},
+"GT43": {"2018": 181411, "2019": 217693, "2020": 253975, "2021": 290257, "2022": 326540, "2023": 362822, "2024": 380963},
+"GT53": {"2018": 265890, "2019": 319068, "2020": 372246, "2021": 425424, "2022": 478602, "2023": 522178, "2024": 531780},
+"GT63": {"2018": 321898, "2019": 386278, "2020": 450658, "2021": 515038, "2022": 579417, "2023": 643797, "2024": 675987},
+"GTR": {"2018": 282863, "2019": 339435, "2020": 396008, "2021": 452581, "2022": 509153, "2023": 565726, "2024": 594012},
+"S300": {"2018": 150108, "2019": 180130, "2020": 210151, "2021": 240173, "2022": 270194, "2023": 300216, "2024": 315227},
+"S320": {"2018": 157482, "2019": 188979, "2020": 220475, "2021": 251971, "2022": 283468, "2023": 314965, "2024": 330713},
+"S350": {"2018": 165771, "2019": 198925, "2020": 232079, "2021": 265233, "2022": 298388, "2023": 331542, "2024": 348119},
+"S400": {"2018": 174496, "2019": 209395, "2020": 244294, "2021": 279194, "2022": 314093, "2023": 348992, "2024": 366442},
+"S450": {"2018": 201015, "2019": 241219, "2020": 227696, "2021": 253088, "2022": 361828, "2023": 402031, "2024": 422132},
+"S500": {"2018": 202585, "2019": 243430, "2020": 284002, "2021": 324573, "2022": 365145, "2023": 405717, "2024": 426003},
+"S550": {"2018": 202585, "2019": 243430, "2020": 284002, "2021": 324573, "2022": 365145, "2023": 405717, "2024": 426003},
+"S560": {"2018": 253713, "2019": 304455, "2020": 355198, "2021": 405940, "2022": 456683, "2023": 507426, "2024": 532797},
+"S580": {"2018": 262954, "2019": 315545, "2020": 368136, "2021": 420727, "2022": 473317, "2023": 525908, "2024": 552203},
+"S63 ": {"2018": 302431, "2019": 362917, "2020": 423404, "2021": 483890, "2022": 544376, "2023": 604863, "2024": 635106},
+"SL55": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 365076, "2024": 383430},
+"SL63": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 471036, "2024": 494588},
+"SLC200": {"2018": 79552, "2019": 95462, "2020": 111373, "2021": 127283, "2022": 143194, "2023": 159104, "2024": 167059},
+"V250 CLASS   ميني فان ": {"2018": 89558, "2019": 107470, "2020": 125382, "2021": 143294, "2022": 161205, "2023": 179117, "2024": 188074},
+"XLP  G800  برابوس": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"سبرنتر فان 519": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 142128, "2023": 0, "2024": 0},
+"مرسيدس فان 524": {"2018": 65960, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"ميني فان  V250": {"2018": 81417, "2019": 97700, "2020": 113983, "2021": 130267, "2022": 146550, "2023": 162834, "2024": 170976},
+"CLS 300": {"2018": 0, "2019": 0, "2020": 0, "2021": 278944, "2022": 0, "2023": 0, "2024": 0},
+
+        },
+
+
+        "هيونداي": {
+"  توسان   توكسون  ": {"2018": 29072, "2019": 34886, "2020": 40701, "2021": 46515, "2022": 52330, "2023": 58144, "2024": 61051},
+" باليسيد": {"2018": 48382, "2019": 58059, "2020": 67735, "2021": 77412, "2022": 87088, "2023": 96765, "2024": 101603},
+" ستاركس   H1": {"2018": 27881, "2019": 33457, "2020": 39033, "2021": 44610, "2022": 50186, "2023": 55762, "2024": 58550},
+" فيلوستر ": {"2018": 50560, "2019": 60780, "2020": 70910, "2021": 81040, "2022": 91170, "2023": 101300, "2024": 106365},
+"i 10": {"2018": 16741, "2019": 20090, "2020": 23439, "2021": 26786, "2022": 30135, "2023": 33483, "2024": 35157},
+"ازيرا   جرانديور ": {"2018": 39846, "2019": 47815, "2020": 55784, "2021": 63753, "2022": 71722, "2023": 79691, "2024": 83675},
+"اكسنت    فيرنا   أكسيل ": {"2018": 19800, "2019": 23760, "2020": 27720, "2021": 31680, "2022": 35640, "2023": 39600, "2024": 41580},
+"النترا    افانتي ": {"2018": 23680, "2019": 28416, "2020": 33152, "2021": 36568, "2022": 42624, "2023": 47360, "2024": 49728},
+"ايونيك 6": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 114817, "2024": 127575},
+"بورتير ": {"2018": 22180, "2019": 26497, "2020": 30912, "2021": 35328, "2022": 39745, "2023": 44161, "2024": 46396},
+"ستاريا": {"2018": 58290, "2019": 69948, "2020": 81606, "2021": 93264, "2022": 104922, "2023": 116580, "2024": 122409},
+"سنتافي    ماكس كروز ": {"2018": 35404, "2019": 42484, "2020": 49565, "2021": 56646, "2022": 63726, "2023": 70807, "2024": 74347},
+"سنتنيال ": {"2018": 42365, "2019": 50839, "2020": 59354, "2021": 67833, "2022": 76312, "2023": 84791, "2024": 89030},
+"سوناتا    سمارت  ": {"2018": 28178, "2019": 33813, "2020": 39448, "2021": 45084, "2022": 50719, "2023": 56355, "2024": 59152},
+"فينيو": {"2018": 35763, "2019": 39737, "2020": 44152, "2021": 49058, "2022": 54509, "2023": 60562, "2024": 0},
+"كريتا": {"2018": 28029, "2019": 33635, "2020": 39241, "2021": 44847, "2022": 50453, "2023": 56059, "2024": 58862},
+"كونا": {"2018": 34536, "2019": 41443, "2020": 48350, "2021": 55258, "2022": 62165, "2023": 69072, "2024": 72526},
+
+        },
+
+
+        "جينيسيس": {
+
+" G 70": {"2018": 58344, "2019": 70013, "2020": 81682, "2021": 93350, "2022": 105019, "2023": 116688, "2024": 122522},
+" G 80": {"2018": 70383, "2019": 84460, "2020": 98537, "2021": 112614, "2022": 126690, "2023": 140767, "2024": 147805},
+" G 90": {"2018": 115510, "2019": 138612, "2020": 161714, "2021": 184816, "2022": 207918, "2023": 231020, "2024": 242571},
+" GV 80": {"2018": 112134, "2019": 134561, "2020": 156988, "2021": 179414, "2022": 201841, "2023": 224268, "2024": 235481},
+"GV 70": {"2018": 74426, "2019": 89311, "2020": 104196, "2021": 119082, "2022": 133967, "2023": 148852, "2024": 156295},
+
+        },
+
+
+        "KIA": {
+" K3 سيراتو ": {"2018": 13820, "2019": 16584, "2020": 19348, "2021": 34672, "2022": 39006, "2023": 43340, "2024": 45507},
+" K7 كادنزا": {"2018": 35950, "2019": 43140, "2020": 50330, "2021": 57520, "2022": 64710, "2023": 71900, "2024": 75495},
+" اوبتما K5": {"2018": 27780, "2019": 30536, "2020": 34292, "2021": 45008, "2022": 50634, "2023": 56260, "2024": 59073},
+" بيجاس": {"2018": 15170, "2019": 18204, "2020": 21238, "2021": 24272, "2022": 27306, "2023": 30340, "2024": 31857},
+" ريو": {"2018": 17450, "2019": 20940, "2020": 24430, "2021": 27920, "2022": 31410, "2023": 34900, "2024": 36645},
+" سبورتاج": {"2018": 24820, "2019": 29784, "2020": 34748, "2021": 39712, "2022": 44676, "2023": 49640, "2024": 52122},
+"EV6": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 239355, "2024": 265950},
+"بونجو - بكب ": {"2018": 32544, "2019": 37968, "2020": 43392, "2021": 48816, "2022": 54240, "2023": 61020, "2024": 67800},
+"بيكانتو": {"2018": 20320, "2019": 22417, "2020": 24480, "2021": 48816, "2022": 32640, "2023": 36720, "2024": 40839},
+"تيلورايد": {"2018": 59250, "2019": 71100, "2020": 82950, "2021": 94800, "2022": 106650, "2023": 118500, "2024": 124425},
+"ستونيك": {"2018": 25749, "2019": 30899, "2020": 36050, "2021": 41199, "2022": 46818, "2023": 51599, "2024": 54179},
+"ستينجر": {"2018": 65810, "2019": 78972, "2020": 92134, "2021": 111232, "2022": 125136, "2023": 139040, "2024": 145992},
+"سورنتو ": {"2018": 37560, "2019": 45072, "2020": 52584, "2021": 85600, "2022": 96300, "2023": 107000, "2024": 112350},
+"سول": {"2018": 25352, "2019": 30440, "2020": 32528, "2021": 36616, "2022": 41704, "2023": 45792, "2024": 50889},
+"سونيت ": {"2018": 25749, "2019": 30899, "2020": 36050, "2021": 41199, "2022": 46818, "2023": 51599, "2024": 54179},
+"سيلتوس": {"2018": 27970, "2019": 33564, "2020": 39158, "2021": 44752, "2022": 50346, "2023": 55940, "2024": 58737},
+"كادنزا K8": {"2018": 67750, "2019": 81300, "2020": 93450, "2021": 108400, "2022": 121950, "2023":  135500, "2024": 142275},
+"كادنزا V6": {"2018": 54699, "2019": 65638, "2020": 76578, "2021": 87517, "2022": 98457, "2023": 0, "2024": 0},
+"كارنفال": {"2018": 36630, "2019": 43956, "2020": 51282, "2021": 58608, "2022": 65934, "2023": 73260, "2024": 76923},
+"كرنس ": {"2018": 33040, "2019": 39648, "2020": 46256, "2021": 52864, "2022": 59472, "2023": 66080, "2024": 69384},
+"كونز": {"2018": 27780, "2019": 30536, "2020": 34292, "2021": 45008, "2022": 50634, "2023": 56260, "2024": 59073},
+"موهافي": {"2018": 38740, "2019": 46488, "2020": 54236, "2021": 64112, "2022": 72126, "2023": 80140, "2024": 84147},
+"نيرو ": {"2018": 32235, "2019": 40295, "2020": 48353, "2021": 56412, "2022": 64471, "2023": 72530, "2024": 80590},
+
+        },
+
+
+        "لكزس": {
+" ES250": {"2018": 64024, "2019": 76829, "2020": 88186, "2021": 102384, "2022": 111668, "2023": 114560, "2024": 134450},
+" ES350": {"2018": 82026, "2019": 98432, "2020": 110880, "2021": 131242, "2022": 144036, "2023": 164052, "2024": 172255},
+" LS350": {"2018": 118989, "2019": 142787, "2020": 166585, "2021": 190382, "2022": 214180, "2023": 237978, "2024": 249877},
+" LX500": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+" LX600": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 338460, "2024": 355383},
+" RX350": {"2018": 89014, "2019": 106817, "2020": 124620, "2021": 142423, "2022": 160225, "2023": 178028, "2024": 186929},
+"ES300": {"2018": 64820, "2019": 77784, "2020": 90748, "2021": 103712, "2022": 116676, "2023": 129640, "2024": 136122},
+"GS350": {"2018": 93909, "2019": 104344, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"GS450": {"2018": 94660, "2019": 108996, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"GX 460": {"2018": 92765, "2019": 111319, "2020": 129871, "2021": 148425, "2022": 166978, "2023": 185531, "2024": 194808},
+"is 200": {"2018": 54270, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"is 300": {"2018": 57800, "2019": 69360, "2020": 80920, "2021": 92480, "2022": 104040, "2023": 115601, "2024": 121381},
+"is 350": {"2018": 67806, "2019": 81367, "2020": 94928, "2021": 108489, "2022": 122049, "2023": 135611, "2024": 142392},
+"LC 500": {"2018": 152470, "2019": 182964, "2020": 213458, "2021": 243952, "2022": 274446, "2023": 304940, "2024": 320187},
+"LS 460": {"2018": 134800, "2019": 161760, "2020": 188720, "2021": 215680, "2022": 242640, "2023": 269600, "2024": 283080},
+"LS 500": {"2018": 147502, "2019": 177003, "2020": 206503, "2021": 236004, "2022": 265504, "2023": 295005, "2024": 309755},
+"LX 570": {"2018": 166027, "2019": 199234, "2020": 232440, "2021": 265646, "2022": 298851, "2023": 0, "2024": 0},
+"NX 200": {"2018": 72950, "2019": 87540, "2020": 102130, "2021": 116720, "2022": 131310, "2023": 145900, "2024": 153195},
+"NX300": {"2018": 65636, "2019": 78763, "2020": 91890, "2021": 105018, "2022": 118145, "2023": 131272, "2024": 137836},
+"NX350": {"2018": 74010, "2019": 88812, "2020": 103614, "2021": 118416, "2022": 133218, "2023": 148020, "2024": 155421},
+"RC300": {"2018": 70671, "2019": 84805, "2020": 98938, "2021": 113073, "2022": 127207, "2023": 141341, "2024": 148408},
+"RC350": {"2018": 85230, "2019": 102276, "2020": 119322, "2021": 136368, "2022": 153414, "2023": 170460, "2024": 178983},
+"RC-F": {"2018": 125430, "2019": 139128, "2020": 170431, "2021": 197728, "2022": 281756, "2023": 329540, "2024": 346017},
+"RXH450": {"2018": 91845, "2019": 110214, "2020": 128583, "2021": 146952, "2022": 165321, "2023": 183690, "2024": 192875},
+"UX200": {"2018": 53366, "2019": 64039, "2020": 74712, "2021": 58386, "2022": 96059, "2023": 106732, "2024": 112096},
+
+        },
+
+
+
+
+        "لاند روفر": {
+" V8   5.0   Autobiography": {"2018": 283981, "2019": 340778, "2020": 397574, "2021": 454371, "2022": 511167, "2023": 567963, "2024": 596361},
+" ايفوك": {"2018": 74295, "2019": 89154, "2020": 104014, "2021": 118872, "2022": 133731, "2023": 148591, "2024": 156020},
+" ديفندر SE   4V": {"2018": 100113, "2019": 120136, "2020": 140158, "2021": 160181, "2022": 180204, "2023": 200226, "2024": 210237},
+" فوج HSE   V8  ": {"2018": 235722, "2019": 282866, "2020": 330011, "2021": 377155, "2022": 424300, "2023": 471444, "2024": 495016},
+" فوج SE    V8  ": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+" فوج SE   3.0   V6  ": {"2018": 195901, "2019": 235081, "2020": 274261, "2021": 313441, "2022": 352622, "2023": 391802, "2024": 411392},
+" فيلار": {"2018": 102202, "2019": 122643, "2020": 143083, "2021": 163524, "2022": 183965, "2023": 204405, "2024": 214625},
+"دسكفري     6V   HSE": {"2018": 119342, "2019": 143210, "2020": 167079, "2021": 190947, "2022": 214816, "2023": 238684, "2024": 250618},
+"ديفندر  X  6V ": {"2018": 140551, "2019": 168661, "2020": 196771, "2021": 224881, "2022": 252992, "2023": 281102, "2024": 295157},
+"ديفندر HSE   6V": {"2018": 122059, "2019": 146470, "2020": 170882, "2021": 195294, "2022": 219706, "2023": 244118, "2024": 256324},
+"ديفندر X  5.0   V8": {"2018": 218103, "2019": 261724, "2020": 305345, "2021": 348966, "2022": 392587, "2023": 436207, "2024": 458017},
+"رانج روفر      8V   HSE  سبورت ": {"2018": 206956, "2019": 248348, "2020": 289739, "2021": 331131, "2022": 372522, "2023": 413913, "2024": 434609},
+"رانج روفر  2.0  4V    SE  سبورت  ": {"2018": 129702, "2019": 155643, "2020": 181584, "2021": 207524, "2022": 233465, "2023": 259405, "2024": 272375},
+"رانج روفر  3.0    6V   HSE  سبورت ": {"2018": 148714, "2019": 178457, "2020": 208200, "2021": 237942, "2022": 267685, "2023": 297428, "2024": 312299},
+"رانج روفر L460": {"2018": 270480, "2019": 324576, "2020": 378672, "2021": 432768, "2022": 486864, "2023": 540960, "2024": 568008},
+"رانج روفر SVR    V8  سبورت": {"2018": 246293, "2019": 295552, "2020": 344811, "2021": 394069, "2022": 443328, "2023": 492587, "2024": 517216},
+"سبورت   V6    Autobiography  ": {"2018": 176831, "2019": 212197, "2020": 247563, "2021": 282930, "2022": 318296, "2023": 353662, "2024": 371345},
+
+        },
+
+
+
+        "AUDI": {
+" A 3": {"2018": 55384, "2019": 66460, "2020": 77537, "2021": 88614, "2022": 99690, "2023": 110767, "2024": 116305},
+"A 4": {"2018": 72040, "2019": 86448, "2020": 100856, "2021": 115264, "2022": 129672, "2023": 144080, "2024": 151284},
+"A 5": {"2018": 89977, "2019": 107972, "2020": 125968, "2021": 143963, "2022": 161959, "2023": 179954, "2024": 188952},
+"A 6": {"2018": 93243, "2019": 111892, "2020": 130540, "2021": 149189, "2022": 170537, "2023": 186486, "2024": 195810},
+"A 7": {"2018": 123172, "2019": 147806, "2020": 172441, "2021": 197075, "2022": 221710, "2023": 246344, "2024": 258661},
+"A 8": {"2018": 158901, "2019": 190681, "2020": 222461, "2021": 254242, "2022": 286022, "2023": 317802, "2024": 333692},
+"Q 3": {"2018": 67710, "2019": 81252, "2020": 94794, "2021": 108336, "2022": 121878, "2023": 135420, "2024": 142191},
+"Q 5": {"2018": 96961, "2019": 116354, "2020": 135746, "2021": 155138, "2022": 174531, "2023": 193923, "2024": 203619},
+"Q7": {"2018": 118141, "2019": 141770, "2020": 165398, "2021": 189026, "2022": 212655, "2023": 236283, "2024": 248097},
+"Q 8": {"2018": 134383, "2019": 161260, "2020": 188137, "2021": 215014, "2022": 241890, "2023": 268767, "2024": 282205},
+"RS5": {"2018": 169213, "2019": 203056, "2020": 236899, "2021": 270742, "2022": 304584, "2023": 338427, "2024": 335348},
+"RS6": {"2018": 233987, "2019": 280785, "2020": 327582, "2021": 374380, "2022": 421177, "2023": 467975, "2024": 491374},
+"RS7": {"2018": 246551, "2019": 295861, "2020": 345171, "2021": 394481, "2022": 443791, "2023": 493101, "2024": 517756},
+"S3": {"2018": 77553, "2019": 93063, "2020": 108573, "2021": 124084, "2022": 139594, "2023": 155105, "2024": 162860},
+"S5": {"2018": 124177, "2019": 149013, "2020": 173848, "2021": 198684, "2022": 223519, "2023": 248355, "2024": 260773},
+"S6": {"2018": 153754, "2019": 184505, "2020": 215256, "2021": 246007, "2022": 276757, "2023": 307508, "2024": 322883},
+"S7": {"2018": 166751, "2019": 200101, "2020": 233451, "2021": 266801, "2022": 300151, "2023": 333501, "2024": 350176},
+"S8": {"2018": 245664, "2019": 294797, "2020": 343930, "2021": 393092, "2022": 442195, "2023": 491328, "2024": 515894},
+"TT": {"2018": 89921, "2019": 107905, "2020": 125889, "2021": 143874, "2022": 161858, "2023": 179842, "2024": 188834},
+
+        },
+
+
+        "Ford": {
+" V8  4X2  F350 غمارة": {"2018": 46561, "2019": 55874, "2020": 65187, "2021": 74498, "2022": 83811, "2023": 93123, "2024": 97779},
+" V8  4X4  F350 غمارتين": {"2018": 68160, "2019": 71076, "2020": 83748, "2021": 118672, "2022": 132930, "2023": 164823, "2024": 173064},
+" فلكس": {"2018": 51810, "2019": 62172, "2020": 72534, "2021": 82896, "2022": 93258, "2023": 103620, "2024": 108801},
+" فيجو": {"2018": 13470, "2019": 16164, "2020": 18858, "2021": 21552, "2022": 24246, "2023": 26940, "2024": 28287},
+"اسكورت": {"2018": 24970, "2019": 29964, "2020": 34958, "2021": 39952, "2022": 44946, "2023": 49940, "2024": 52437},
+"اسكيب": {"2018": 37170, "2019": 44604, "2020": 52038, "2021": 59472, "2022": 66906, "2023": 74340, "2024": 78057},
+"افانور ": {"2018": 79759, "2019": 95710, "2020": 111663, "2021": 127614, "2022": 143566, "2023": 159517, "2024": 167492},
+"اكس تريل": {"2018": 38900, "2019": 46680, "2020": 54460, "2021": 62240, "2022": 70020, "2023": 77800, "2024": 81690},
+"اكسبدشن": {"2018": 60216, "2019": 72259, "2020": 84302, "2021": 96346, "2022": 108389, "2023": 120432, "2024": 126454},
+"اكسبلورر": {"2018": 51124, "2019": 61349, "2020": 71574, "2021": 81798, "2022": 92023, "2023": 102248, "2024": 107360},
+"ايدج": {"2018": 46233, "2019": 55480, "2020": 64727, "2021": 73974, "2022": 83220, "2023": 92467, "2024": 97090},
+"ايفرست": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"ايكوسبورت": {"2018": 28690, "2019": 34428, "2020": 40166, "2021": 45904, "2022": 51642, "2023": 57380, "2024": 60249},
+"تورس": {"2018": 39077, "2019": 46892, "2020": 54708, "2021": 62523, "2022": 70339, "2023": 78154, "2024": 82061},
+"جيب برونكو  V4": {"2018": 60652, "2019": 72783, "2020": 84913, "2021": 97044, "2022": 109174, "2023": 121305, "2024": 127370},
+"جيب برونكو ر V6": {"2018": 84225, "2019": 101070, "2020": 117915, "2021": 134760, "2022": 151605, "2023": 168450, "2024": 176872},
+"رابتر  F150": {"2018": 123201, "2019": 147841, "2020": 172481, "2021": 197121, "2022": 221761, "2023": 246401, "2024": 258721},
+"رينجر بيكب": {"2018": 32709, "2019": 39251, "2020": 45793, "2021": 52335, "2022": 58878, "2023": 65419, "2024": 68690},
+"غمارة  V10  4X2  F450": {"2018": 58065, "2019": 69678, "2020": 81291, "2021": 92904, "2022": 104517, "2023": 116130, "2024": 121936},
+"غمارة  V6  F150": {"2018": 52617, "2019": 63140, "2020": 73663, "2021": 84186, "2022": 94709, "2023": 105233, "2024": 110494},
+"غمارة  V8  4X4  F550": {"2018": 89711, "2019": 107653, "2020": 125596, "2021": 143554, "2022": 161480, "2023": 179422, "2024": 188393},
+"غمارة  V8  F150": {"2018": 50111, "2019": 60133, "2020": 70155, "2021": 80178, "2022": 90200, "2023": 100222, "2024": 105233},
+"غمارتين  V6  F150": {"2018": 75470, "2019": 90564, "2020": 105685, "2021": 120753, "2022": 135847, "2023": 150941, "2024": 158488},
+"غمارتين  V8  F150": {"2018": 57474, "2019": 68969, "2020": 80464, "2021": 91959, "2022": 103453, "2023": 114948, "2024": 120695},
+"غمارتين V8  F250": {"2018": 103553, "2019": 124263, "2020": 144974, "2021": 165684, "2022": 186395, "2023": 207105, "2024": 217460},
+"فان بضائع وركاب ترانزيت 9 ركاب  ": {"2018": 42856, "2019": 51428, "2020": 58000, "2021": 68571, "2022": 77142, "2023": 85713, "2024": 89998},
+"فوكس": {"2018": 28910, "2019": 34692, "2020": 40474, "2021": 46256, "2022": 52038, "2023": 57820, "2024": 60711},
+"فيوجن": {"2018": 38450, "2019": 46140, "2020": 53830, "2021": 61520, "2022": 69210, "2023": 76900, "2024": 80745},
+"موستنج V4": {"2018": 63984, "2019": 76781, "2020": 89578, "2021": 102375, "2022": 115172, "2023": 127969, "2024": 134367},
+"موستنج V6": {"2018": 67539, "2019": 81047, "2020": 94555, "2021": 108063, "2022": 121577, "2023": 135079, "2024": 141833},
+"موستنج V8": {"2018": 71094, "2019": 85313, "2020": 99532, "2021": 113750, "2022": 127969, "2023": 142188, "2024": 149297},
+"مونديو": {"2018": 38450, "2019": 46140, "2020": 53830, "2021": 61520, "2022": 69210, "2023": 76900, "2024": 80745},
+
+        },
+
+
+        "لينكولن": {
+" MKZ": {"2018": 87470, "2019": 104964, "2020": 122458, "2021": 139952, "2022": 157446, "2023": 174940, "2024": 183687},
+"MKX": {"2018": 84672, "2019": 105840, "2020": 127008, "2021": 148176, "2022": 169344, "2023": 190512, "2024": 211680},
+"افياتور ": {"2018": 96736, "2019": 116084, "2020": 135431, "2021": 154778, "2022": 174126, "2023": 193473, "2024": 203147},
+"كورسير": {"2018": 56596, "2019": 67916, "2020": 79235, "2021": 90555, "2022": 101874, "2023": 113193, "2024": 118853},
+"كونتيننتال   تاون ": {"2018": 81150, "2019": 97380, "2020": 113610, "2021": 129840, "2022": 146070, "2023": 162300, "2024": 170415},
+"نافيجيتور": {"2018": 119589, "2019": 143507, "2020": 167425, "2021": 191343, "2022": 215260, "2023": 239178, "2024": 251137},
+"نوتيلوس": {"2018": 76030, "2019": 91236, "2020": 106442, "2021": 121648, "2022": 136854, "2023": 152060, "2024": 159663},
+
+        },
+
+
+        "GMC": {
+            "سوبربان": {"2018": 82732, "2019": 99278, "2020": 115824, "2021": 132370, "2022": 148917, "2023": 165463, "2024": 173736},
+            "اكاديا": {"2018": 56900, "2019": 68280, "2020": 79660, "2021": 91040, "2022": 102420, "2023": 113800, "2024": 119490},
+            "تيرين": {"2018": 40690, "2019": 48829, "2020": 56967, "2021": 65105, "2022": 73243, "2023": 81381, "2024": 85450},
+            "سافانا LWB 3500": {"2018": 60883, "2019": 73060, "2020": 85236, "2021": 97413, "2022": 109589, "2023": 121766, "2024": 127854},
+            "سافانا LWB 2500": {"2018": 54020, "2019": 64825, "2020": 75629, "2021": 86433, "2022": 97237, "2023": 108041, "2024": 113443},
+            "سييرا غمارة V8 DH1500": {"2018": 64870, "2019": 77844, "2020": 90818, "2021": 103792, "2022": 116766, "2023": 129740, "2024": 136227},
+            "سييرا غمارة V8 DH2500": {"2018": 66538, "2019": 79846, "2020": 93153, "2021": 106461, "2022": 119769, "2023": 133077, "2024": 139731},
+            "سييرا غمارة ونص V8 DH2500": {"2018": 68201, "2019": 81842, "2020": 95482, "2021": 109123, "2022": 122763, "2023": 136404, "2024": 143224},
+            "سييرا غمارتين DENALI V8 6.0L": {"2018": 98387, "2019": 118064, "2020": 137742, "2021": 157419, "2022": 177096, "2023": 196774, "2024": 206613},
+            "سييرا غمارتين V8 DH1500": {"2018": 71210, "2019": 85451, "2020": 99693, "2021": 113935, "2022": 128177, "2023": 142416, "2024": 149537},
+            "سييرا غمارتين V8 DH2500": {"2018": 74768, "2019": 89722, "2020": 104675, "2021": 119629, "2022": 134583, "2023": 149536, "2024": 157013},
+            "يوكن SLE 4X2": {"2018": 77471, "2019": 92965, "2020": 108459, "2021": 123954, "2022": 139448, "2023": 154942, "2024": 162689},
+            "يوكن SLE 4X4": {"2018": 84412, "2019": 101294, "2020": 118177, "2021": 135059, "2022": 151941, "2023": 168824, "2024": 177265},
+            "يوكن SLT 4X4": {"2018": 93972, "2019": 112767, "2020": 131561, "2021": 150356, "2022": 169150, "2023": 187945, "2024": 197342},
+            "يوكن XL SLE 4X2": {"2018": 81967, "2019": 98360, "2020": 114754, "2021": 131147, "2022": 147541, "2023": 163934, "2024": 172131},
+            "يوكن XL SLE 4X4": {"2018": 86644, "2019": 103973, "2020": 121302, "2021": 138630, "2022": 155959, "2023": 173288, "2024": 181952},
+            "يوكن XL Denali": {"2018": 117274, "2019": 140729, "2020": 164184, "2021": 187638, "2022": 211093, "2023": 234548, "2024": 246275},
+            "يوكن Denali": {"2018": 113403, "2019": 136084, "2020": 158764, "2021": 181449, "2022": 204125, "2023": 226806, "2024": 238146}
+        },
+        "Jeep": {
+            "جلاديتور بيكب غمارة": {"2018": 47115, "2019": 56538, "2020": 65961, "2021": 75384, "2022": 84807, "2023": 94230, "2024": 98942},
+            "جلاديتور بيكب غمارتين": {"2018": 56829, "2019": 68195, "2020": 79561, "2021": 90926, "2022": 102292, "2023": 113658, "2024": 119341},
+            "رانجلر جيب 2 أبواب": {"2018": 49440, "2019": 59328, "2020": 69216, "2021": 79104, "2022": 88992, "2023": 98880, "2024": 103824},
+            "رانجلر جيب 4 أبواب": {"2018": 64100, "2019": 76920, "2020": 89740, "2021": 102560, "2022": 115380, "2023": 128200, "2024": 134610},
+            "جراند شروكي": {"2018": 54000, "2019": 64800, "2020": 75600, "2021": 86400, "2022": 97200, "2023": 108000, "2024": 113400},
+            "جراند شروكي V8 5.7L": {"2018": 79979, "2019": 95975, "2020": 111971, "2021": 127967, "2022": 143963, "2023": 159959, "2024": 167957},
+            "جراند شروكي V8 6.4L": {"2018": 117994, "2019": 141592, "2020": 165192, "2021": 188790, "2022": 212389, "2023": 235988, "2024": 247787},
+            "كومباس": {"2018": 59500, "2019": 71400, "2020": 83300, "2021": 95200, "2022": 107100, "2023": 119000, "2024": 124950},
+            "لاريدو": {"2018": 54000, "2019": 64800, "2020": 75600, "2021": 86400, "2022": 97200, "2023": 108000, "2024": 113400}
+        },
+
+        "بنتلي": {
+"بنتياقا  BANTAYGA": {"2018": 341988, "2019": 410386, "2020": 478783, "2021": 547181, "2022": 615578, "2023": 683976, "2024": 718175},
+"فلاينج سبير  FIYING ": {"2018": 486033, "2019": 583240, "2020": 680446, "2021": 777653, "2022": 874859, "2023": 972066, "2024": 1020669},
+"كونتيننتالCONTINENTAL  GT": {"2018": 405048, "2019": 486058, "2020": 567067, "2021": 648078, "2022": 729086, "2023": 810096, "2024": 850601},
+"مولسان    MULSANNE": {"2018": 634201, "2019": 761042, "2020": 887882, "2021": 1014722, "2022": 1141563, "2023": 1268403, "2024": 1331823},
+
+        },
+        "بورش": {
+" بانميرا": {"2018": 168159, "2019": 201792, "2020": 235423, "2021": 269055, "2022": 302687, "2023": 336319, "2024": 353135},
+" بوكستر": {"2018": 107054, "2019": 128465, "2020": 149876, "2021": 171287, "2022": 195398, "2023": 214109, "2024": 224814},
+" كايين": {"2018": 141070, "2019": 169283, "2020": 197497, "2021": 225711, "2022": 253925, "2023": 282139, "2024": 296246},
+" ماكان": {"2018": 105414, "2019": 126497, "2020": 147580, "2021": 168663, "2022": 189746, "2023": 210829, "2024": 221370},
+"تايكان": {"2018": 176703, "2019": 212044, "2020": 250384, "2021": 285725, "2022": 320551, "2023": 353407, "2024": 371077},
+"سبيس ستير 911": {"2018": 186939, "2019": 224323, "2020": 261710, "2021": 299097, "2022": 336484, "2023": 373872, "2024": 392566},
+"كاريرا  911": {"2018": 160384, "2019": 192461, "2020": 224538, "2021": 256615, "2022": 288692, "2023": 320769, "2024": 336807},
+"كايمن - 718  ": {"2018": 107054, "2019": 128465, "2020": 149875, "2021": 171286, "2022": 192697, "2023": 214108, "2024": 224813},
+
+
+        },
+        "Toyota": {
+" افانزا": {"2018": 24595, "2019": 29513, "2020": 34432, "2021": 39351, "2022": 44271, "2023": 49189, "2024": 51684},
+" انوفا": {"2018": 36562, "2019": 43875, "2020": 51187, "2021": 58500, "2022": 65812, "2023": 73125, "2024": 76781},
+" برادو   2.8    4X4  ديزل": {"2018": 60201, "2019": 72241, "2020": 84281, "2021": 96322, "2022": 108362, "2023": 120402, "2024": 126422},
+" برادو  2.7    4X4 بنزين": {"2018": 56462, "2019": 67574, "2020": 79047, "2021": 90339, "2022": 101632, "2023": 112924, "2024": 118570},
+" برادو  4.0    4X4 بنزين": {"2018": 62312, "2019": 74774, "2020": 87237, "2021": 99698, "2022": 112161, "2023": 124623, "2024": 130854},
+" بريوس": {"2018": 36570, "2019": 43884, "2020": 51198, "2021": 58512, "2022": 65826, "2023": 73140, "2024": 76797},
+" جرانفا فان": {"2018": 71990, "2019": 86388, "2020": 100786, "2021": 115184, "2022": 129582, "2023": 143980, "2024": 151179},
+" راش": {"2018": 20625, "2019": 24750, "2020": 28875, "2021": 33000, "2022": 37125, "2023": 41250, "2024": 43313},
+" سيكويا": {"2018": 0, "2019": 0, "2020": 0, "2021": 162750, "2022": 186000, "2023": 209250, "2024": 232500},
+" فورتشنر   VX  2.8    4X4   ديزل": {"2018": 57072, "2019": 68486, "2020": 79900, "2021": 91314, "2022": 91728, "2023": 106164, "2024": 117960},
+" فورتشنر  GX  2.7    4X2 بنزين": {"2018": 42200, "2019": 50641, "2020": 59081, "2021": 67521, "2022": 75960, "2023": 84401, "2024": 88621},
+" فورتشنر  GX  2.7   4X4   بنزين": {"2018": 45570, "2019": 54648, "2020": 63798, "2021": 72912, "2022": 82026, "2023": 91140, "2024": 95967},
+" فورتشنر  GX 2.4    4X4   ديزل": {"2018": 49287, "2019": 59144, "2020": 69002, "2021": 78858, "2022": 88716, "2023": 98573, "2024": 103502},
+" فورشنر  VX  4.0    4X4  بنزين": {"2018": 53073, "2019": 63688, "2020": 74303, "2021": 84918, "2022": 95532, "2023": 106147, "2024": 111545},
+" كامركروزر": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"C- HR ": {"2018": 37309, "2019": 44771, "2020": 52233, "2021": 59695, "2022": 67156, "2023": 74618, "2024": 78349},
+"GR  86": {"2018": 33480, "2019": 41850, "2020": 50220, "2021": 58590, "2022": 66960, "2023": 75330, "2024": 83708},
+"اف جي": {"2018": 50452, "2019": 60543, "2020": 70633, "2021": 80724, "2022": 90814, "2023": 100905, "2024": 105950},
+"افالون    PREMIUM": {"2018": 60326, "2019": 72391, "2020": 84456, "2021": 96522, "2022": 108587, "2023": 120652, "2024": 126685},
+"افالون    TOURING": {"2018": 49492, "2019": 59391, "2020": 69289, "2021": 79188, "2022": 89086, "2023": 98985, "2024": 103934},
+"افالون    XLE": {"2018": 48175, "2019": 57809, "2020": 67444, "2021": 77079, "2022": 86713, "2023": 96348, "2024": 101165},
+"افالون   LIMITED": {"2018": 52320, "2019": 62784, "2020": 73248, "2021": 83712, "2022": 94176, "2023": 104640, "2024": 109872},
+"اوريون ": {"2018": 43820, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0},
+"بريفيا": {"2018": 48190, "2019": 57828, "2020": 67466, "2021": 77104, "2022": 86742, "2023": 96380, "2024": 101199},
+"راف فور RAV4": {"2018": 35338, "2019": 42405, "2020": 49473, "2021": 56540, "2022": 63608, "2023": 70676, "2024": 74210},
+"رايز": {"2018": 20623, "2019": 24748, "2020": 28872, "2021": 32997, "2022": 37121, "2023": 41246, "2024": 43308},
+"ربع (مصندق)": {"2018": 49709, "2019": 59650, "2020": 69592, "2021": 79533, "2022": 89475, "2023": 99417, "2024": 104388},
+"سوبرا": {"2018": 63900, "2019": 79680, "2020": 89460, "2021": 102240, "2022": 115020, "2023": 127800, "2024": 134190},
+"شاص غمارة    4.0    بنزين ": {"2018": 44572, "2019": 53487, "2020": 62401, "2021": 71316, "2022": 80230, "2023": 89145, "2024": 93602},
+"شاص غمارة  4.5    ديزل ": {"2018": 51126, "2019": 61351, "2020": 71576, "2021": 81801, "2022": 92026, "2023": 102251, "2024": 107364},
+"شاص غمارتين   4.0    بنزين ": {"2018": 45495, "2019": 54594, "2020": 63693, "2021": 72792, "2022": 81891, "2023": 90990, "2024": 95540},
+"شاص غمارتين  4.5   ديزل ": {"2018": 57364, "2019": 68837, "2020": 80310, "2021": 91782, "2022": 103255, "2023": 114728, "2024": 120646},
+"كامري    2.5    SE": {"2018": 39889, "2019": 47867, "2020": 55845, "2021": 63822, "2022": 71801, "2023": 79778, "2024": 83767},
+"كامري    2.5   GLE": {"2018": 36709, "2019": 44051, "2020": 51393, "2021": 58734, "2022": 66076, "2023": 73418, "2024": 77089},
+"كامري   2.5    هايبرد   GLE ": {"2018": 0, "2019": 45353, "2020": 52912, "2021": 60471, "2022": 68030, "2023": 75589, "2024": 79368},
+"كامري   2.5   LE ": {"2018": 30882, "2019": 37058, "2020": 43234, "2021": 49410, "2022": 55587, "2023": 61763, "2024": 64851},
+"كامري  2.5    هايبرد    LE": {"2018": 0, "2019": 38693, "2020": 45457, "2021": 51951, "2022": 58445, "2023": 64938, "2024": 68185},
+"كامري  SE  6V  3.5   ": {"2018": 0, "2019": 54144, "2020": 63168, "2021": 72192, "2022": 81216, "2023": 90240, "2024": 94752},
+"كامري 2.5 هايبرد  LUMIERE": {"2018": 0, "2019": 59699, "2020": 69649, "2021": 79599, "2022": 89549, "2023": 99499, "2024": 104474},
+"كامري قراندي  6V    3.5     ": {"2018": 0, "2019": 56480, "2020": 65893, "2021": 75307, "2022": 84720, "2023": 94133, "2024": 98840},
+"كرولا  1.6": {"2018": 23180, "2019": 28788, "2020": 30884, "2021": 39276, "2022": 44186, "2023": 49095, "2024": 51550},
+"كرولا  2.0 ": {"2018": 27452, "2019": 32942, "2020": 38433, "2021": 43923, "2022": 49413, "2023": 54904, "2024": 57649},
+"كرولا  كروس": {"2018": 30951, "2019": 37141, "2020": 43331, "2021": 49522, "2022": 55712, "2023": 61902, "2024": 64977},
+"كورلا  1.8": {"2018": 30205, "2019": 36245, "2020": 42286, "2021": 48327, "2022": 54368, "2023": 60409, "2024": 63429},
+"لاندكروزر  GR  3.5  بنزين ": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 264537},
+"لاندكروزر  GXR    3.3  ديزل  ": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 163725, "2024": 171911},
+"لاندكروزر  GXR  3.5 بنزين ": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 174180, "2024": 182889},
+"لاندكروزر  GXR  6V  4.0  ": {"2018": 72637, "2019": 84743, "2020": 96849, "2021": 108955, "2022": 121061, "2023": 0, "2024": 0},
+"لاندكروزر  GXR  8V  4.5      ": {"2018": 95459, "2019": 111367, "2020": 127278, "2021": 143188, "2022": 159098, "2023": 0, "2024": 0},
+"لاندكروزر  VX  3.5 بنزين ": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 222417, "2024": 233537},
+"لاندكروزر GX  3.3  ديزل": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 154032, "2024": 161734},
+"لاندكروزر GX  4.0   V6   بنزين": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 143899, "2024": 151093},
+"لاندكروزر GXR  8V  4.6 ديزل": {"2018": 86182, "2019": 100546, "2020": 114910, "2021": 129273, "2022": 143637, "2023": 0, "2024": 0},
+"لاندكروزر VX  3.3  ديزل": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 216739, "2024": 227576},
+"لاندكروزر VXR  3.5  بنزين": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 253440, "2024": 266112},
+"لاندكروزر VXS  5.7": {"2018": 145640, "2019": 169914, "2020": 194187, "2021": 218461, "2022": 242734, "2023": 0, "2024": 0},
+"لاندكروزرGRS  3.3  ديزل": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 249315, "2024": 261780},
+"هايس مني باص - بضائع": {"2018": 41664, "2019": 49996, "2020": 58329, "2021": 66662, "2022": 74995, "2023": 83328, "2024": 87495},
+"هايس مني باص -13 راكب": {"2018": 45390, "2019": 54468, "2020": 63546, "2021": 72624, "2022": 81702, "2023": 90780, "2024": 95319},
+"هايلاندر": {"2018": 0, "2019": 0, "2020": 0, "2021": 80964, "2022": 91084, "2023": 101205, "2024": 106265},
+"هايلكس  ADVENTURE غمارتين 4.0  4X4 6V  بنزين": {"2018": 54690, "2019": 65824, "2020": 76566, "2021": 87504, "2022": 98442, "2023": 109380, "2024": 114849},
+"هايلكس غمارة  2.4  GL   4X2  ديزل": {"2018": 31039, "2019": 37247, "2020": 43455, "2021": 49662, "2022": 55870, "2023": 62078, "2024": 65182},
+"هايلكس غمارة  2.4 GLX 4X4   ديزل": {"2018": 36733, "2019": 44080, "2020": 51427, "2021": 58774, "2022": 66120, "2023": 73467, "2024": 77140},
+"هايلكس غمارة  2.7  GLX  4X4  بنزين": {"2018": 34108, "2019": 40930, "2020": 47752, "2021": 54574, "2022": 61395, "2023": 68217, "2024": 71627},
+"هايلكس غمارة  2.8 GL  4X2     ديزل": {"2018": 38773, "2019": 46528, "2020": 54283, "2021": 62038, "2022": 69792, "2023": 77547, "2024": 81424},
+"هايلكس غمارة 2.7  GLX  4X2   بنزين": {"2018": 28489, "2019": 34187, "2020": 39885, "2021": 45582, "2022": 51280, "2023": 56978, "2024": 59827},
+"هايلكس غمارتين  2.7    4X2  GLX بنزين": {"2018": 32091, "2019": 38509, "2020": 44927, "2021": 51346, "2022": 57764, "2023": 64182, "2024": 67391},
+"هايلكس غمارتين  2.7  4X4  GLX  بنزين": {"2018": 34221, "2019": 41065, "2020": 47909, "2021": 54754, "2022": 61598, "2023": 68442, "2024": 71864},
+"هايلكس غمارتين  2.7 4X2  GL  بنزين": {"2018": 28882, "2019": 34658, "2020": 40435, "2021": 46211, "2022": 51987, "2023": 57764, "2024": 60652},
+"هايلكس غمارتين  2.8 4X4  GL ديزل": {"2018": 39516, "2019": 47419, "2020": 55322, "2021": 63225, "2022": 71128, "2023": 79031, "2024": 82983},
+"هايلكس غمارتين 2.7  4X4  GL  بنزين": {"2018": 35685, "2019": 42822, "2020": 49959, "2021": 57096, "2022": 64233, "2023": 71370, "2024": 74938},
+"هايلكس غمارتين 2.8  4X2  GL ديزل": {"2018": 34331, "2019": 41197, "2020": 48063, "2021": 54930, "2022": 61796, "2023": 68662, "2024": 72095},
+"هايلكس غمارتين 2.8 4X4  GLX ديزل": {"2018": 46425, "2019": 55710, "2020": 64995, "2021": 74280, "2022": 83565, "2023": 92850, "2024": 97492},
+"هايلكس غمارتين 4.0  4X4 GLX  بنزين": {"2018": 36030, "2019": 43236, "2020": 50442, "2021": 57648, "2022": 64854, "2023": 72060, "2024": 75663},
+"يارس": {"2018": 16710, "2019": 20052, "2020": 23394, "2021": 26736, "2022": 27312, "2023": 31457, "2024": 36008},
+"تاكوما ": {"2018": 0, "2019": 0, "2020": 0, "2021": 158628, "2022": 150462, "2023": 166555, "2024": 182647},
+"تاندرا": {"2018": 0, "2019": 0, "2020": 0, "2021": 95259, "2022": 108868, "2023": 122476, "2024": 136085},
+"كراون SUV": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 119739, "2024": 123452},
+
+        },
+
+
+        "دودج": {
+" تشالنجر ": {"2018": 50861, "2019": 61033, "2020": 71205, "2021": 81378, "2022": 91550, "2023": 101720, "2024": 105806},
+" دورانجو": {"2018": 66620, "2019": 79944, "2020": 93268, "2021": 106592, "2022": 119916, "2023": 133240, "2024": 139902},
+" رام1500  غمارة    4x4    V6": {"2018": 43012, "2019": 51615, "2020": 60217, "2021": 68820, "2022": 77422, "2023": 86025, "2024": 90326},
+" رام1500  غمارة    4x4    V8": {"2018": 59721, "2019": 71665, "2020": 83609, "2021": 95554, "2022": 107498, "2023": 119442, "2024": 125414},
+" رام1500 غمارتين    V6  3.6L": {"2018": 62762, "2019": 75314, "2020": 87867, "2021": 100419, "2022": 112972, "2023": 125524, "2024": 131800},
+" نيون": {"2018": 24510, "2019": 29413, "2020": 34315, "2021": 39217, "2022": 44119, "2023": 49021, "2024": 51472},
+"Viper  GTS": {"2018": 218180, "2019": 261817, "2020": 305453, "2021": 349089, "2022": 392725, "2023": 436361, "2024": 458179},
+"تشارجر  5.7L  R/T  8V": {"2018": 60647, "2019": 72777, "2020": 84906, "2021": 97036, "2022": 109165, "2023": 121295, "2024": 127360},
+"تشارجر  6.4L  SRT  8V": {"2018": 78214, "2019": 93857, "2020": 109500, "2021": 125142, "2022": 140785, "2023": 156428, "2024": 164249},
+"تشارجر SE  6V": {"2018": 49760, "2019": 59713, "2020": 69665, "2021": 79617, "2022": 89569, "2023": 99521, "2024": 104497},
+"رام  4x2  1200  بيك اب": {"2018": 22369, "2019": 26843, "2020": 31317, "2021": 35790, "2022": 40264, "2023": 44738, "2024": 46975},
+"رام 1500  غمارة  4x4  V8": {"2018": 43599, "2019": 52319, "2020": 61039, "2021": 69759, "2022": 78479, "2023": 87199, "2024": 91559},
+"رام 1500  غمارة 4x4  V8 5.7L": {"2018": 79003, "2019": 94804, "2020": 110605, "2021": 126406, "2022": 142206, "2023": 158007, "2024": 165907},
+"رام 1500  غمارة Big  4x4  V8 ": {"2018": 53666, "2019": 64399, "2020": 75133, "2021": 85866, "2022": 96600, "2023": 107332, "2024": 112699},
+"رام 1500  غمارتين  4x4 V8  5.7 ": {"2018": 82849, "2019": 99419, "2020": 115989, "2021": 132559, "2022": 149129, "2023": 165699, "2024": 173984},
+"رام 1500  غمارتين  4x4 V8  6.4L ": {"2018": 91800, "2019": 110160, "2020": 128520, "2021": 146880, "2022": 165240, "2023": 183600, "2024": 192780},
+"رام 1500  غمارتين  Express    V6  3.6L ": {"2018": 54499, "2019": 65399, "2020": 76299, "2021": 87199, "2022": 98099, "2023": 108999, "2024": 114449},
+"رام 1500 غمارة  Express  4x2  V6": {"2018": 42896, "2019": 51476, "2020": 60055, "2021": 68634, "2022": 77214, "2023": 85793, "2024": 90083},
+"رام 1500 غمارة  Express  4x4  V6": {"2018": 46084, "2019": 55301, "2020": 64518, "2021": 73734, "2022": 82951, "2023": 92168, "2024": 96776},
+"رام 2500  غمارة  ST 4x4  V6": {"2018": 53944, "2019": 64733, "2020": 75522, "2021": 86311, "2022": 97100, "2023": 107889, "2024": 113283},
+"رام 2500  غمارتين 4x4  V8 5.7L ": {"2018": 62768, "2019": 75322, "2020": 87875, "2021": 100429, "2022": 112982, "2023": 125536, "2024": 131813},
+"رام 2500 غمارتين 4x4 V8 6.4L ": {"2018": 89236, "2019": 107083, "2020": 124930, "2021": 142777, "2022": 160624, "2023": 178471, "2024": 187394},
+
+        },
+
+
+        "سانج يونج": {
+"XLV": {"2018": 26637, "2019": 33296, "2020": 39956, "2021": 46615, "2022": 53274, "2023": 59933, "2024": 66593},
+"تيفولي": {"2018": 27032, "2019": 33790, "2020": 40548, "2021": 47306, "2022": 54064, "2023": 60822, "2024": 67580},
+"ريكستون": {"2018": 44985, "2019": 56231, "2020": 67477, "2021": 78723, "2022": 89970, "2023": 101215, "2024": 112462},
+"كوراندو": {"2018": 32454, "2019": 40568, "2020": 48682, "2021": 56795, "2022": 64909, "2023": 73022, "2024": 81136},
+
+        },
+
+
+
+
+        "فولكس فاجن": {
+"ARTEON": {"2018": 53712, "2019": 67140, "2020": 80568, "2021": 93996, "2022": 107424, "2023": 120852, "2024": 134280},
+"ID.4": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 84091, "2023": 93434, "2024": 98106},
+"T- ROC": {"2018": 28923, "2019": 36774, "2020": 43588, "2021": 50836, "2022": 57846, "2023": 65767, "2024": 72548},
+"باسات": {"2018": 36340, "2019": 43609, "2020": 50877, "2021": 58145, "2022": 65413, "2023": 72681, "2024": 76315},
+"بيتل": {"2018": 41677, "2019": 50012, "2020": 58348, "2021": 66683, "2022": 75019, "2023": 83354, "2024": 87522},
+"تيجوان": {"2018": 64259, "2019": 77111, "2020": 89963, "2021": 102815, "2022": 115667, "2023": 128519, "2024": 134945},
+"تيرامونت": {"2018": 53523, "2019": 64228, "2020": 74932, "2021": 85637, "2022": 96341, "2023": 107046, "2024": 112398},
+"جولف": {"2018": 59595, "2019": 71514, "2020": 83433, "2021": 95352, "2022": 107271, "2023": 119190, "2024": 125149},
+"جيتا": {"2018": 28534, "2019": 34241, "2020": 39948, "2021": 45655, "2022": 51362, "2023": 57069, "2024": 59923},
+"طوارق ": {"2018": 108285, "2019": 129942, "2020": 151599, "2021": 173256, "2022": 194913, "2023": 216570, "2024": 227399},
+
+        },
+
+
+        "فيراري": {
+"812  GTS": {"2018": 738592, "2019": 886310, "2020": 1034029, "2021": 1181746, "2022": 1329465, "2023": 1477183, "2024": 1551042},
+"812  Superfast  MY18": {"2018": 631768, "2019": 758122, "2020": 884476, "2021": 1010830, "2022": 1137183, "2023": 1263537, "2024": 1326713},
+"F8  TRIBUTO": {"2018": 476368, "2019": 571642, "2020": 666916, "2021": 762190, "2022": 857463, "2023": 952737, "2024": 1000374},
+"Ferrari  Monza  SP1": {"2018": 3010858, "2019": 3613030, "2020": 4215202, "2021": 4817374, "2022": 5419545, "2023": 6021717, "2024": 6322803},
+"Ferrari  Monza  SP2": {"2018": 2950416, "2019": 3540500, "2020": 4130583, "2021": 4720666, "2022": 5310750, "2023": 5900833, "2024": 6958745},
+"Ferrari  Roma": {"2018": 460059, "2019": 552071, "2020": 644083, "2021": 736094, "2022": 828106, "2023": 920118, "2024": 966124},
+"Ferrari 488 pista": {"2018": 706270, "2019": 847524, "2020": 988778, "2021": 1130032, "2022": 1271286, "2023": 1412540, "2024": 1483167},
+"Portofino  M": {"2018": 407506, "2019": 489008, "2020": 570509, "2021": 652010, "2022": 733512, "2023": 815013, "2024": 855764},
+"SF90  Spider": {"2018": 899183, "2019": 1079020, "2020": 1258857, "2021": 1438694, "2022": 1618530, "2023": 1798367, "2024": 1888285},
+"SF90  Stradale": {"2018": 796905, "2019": 956286, "2020": 1115667, "2021": 1275048, "2022": 1434429, "2023": 1593810, "2024": 1673501},
+
+        },
+
+
+        "كاديلاك": {
+" CT4": {"2018": 57337, "2019": 68804, "2020": 80272, "2021": 91739, "2022": 103206, "2023": 114673, "2024": 120407},
+" CT5": {"2018": 58835, "2019": 70601, "2020": 82368, "2021": 94135, "2022": 105902, "2023": 117669, "2024": 123552},
+" ESCALADE": {"2018": 154704, "2019": 185644, "2020": 216584, "2021": 247526, "2022": 278466, "2023": 309407, "2024": 324877},
+" XT4": {"2018": 61052, "2019": 73262, "2020": 85472, "2021": 97682, "2022": 109893, "2023": 122103, "2024": 128208},
+" XT5": {"2018": 84190, "2019": 101028, "2020": 117866, "2021": 134704, "2022": 151542, "2023": 168380, "2024": 176799},
+" XT6": {"2018": 93810, "2019": 112573, "2020": 131335, "2021": 150097, "2022": 168859, "2023": 187621, "2024": 197002},
+"ATS": {"2018": 57500, "2019": 69840, "2020": 94404, "2021": 110138, "2022": 125872, "2023": 141505, "2024": 157340},
+"CT6": {"2018": 126120, "2019": 151344, "2020": 176568, "2021": 201792, "2022": 227016, "2023": 252240, "2024": 264852},
+"CTS": {"2018": 77740, "2019": 88624, "2020": 103394, "2021": 118164, "2022": 132935, "2023": 147706, "2024": 155091},
+
+        },
+
+
+        "كرايسلر": {
+" V6 3.6L  C300": {"2018": 66457, "2019": 79749, "2020": 93040, "2021": 106332, "2022": 119623, "2023": 132915, "2024": 139561},
+"M300": {"2018": 69630, "2019": 83556, "2020": 97482, "2021": 111408, "2022": 125334, "2023": 139260, "2024": 146223},
+"V8 5.7L  C300": {"2018": 79077, "2019": 94892, "2020": 110708, "2021": 126523, "2022": 142339, "2023": 158154, "2024": 166062},
+"V8 5.7L  S300": {"2018": 77026, "2019": 92432, "2020": 107837, "2021": 123242, "2022": 138648, "2023": 154053, "2024": 161756},
+
+        }, 
+
+
+
+        "مازدا": {
+"2": {"2018": 23512, "2019": 28214, "2020": 32917, "2021": 37618, "2022": 42320, "2023": 47024, "2024": 49375},
+"6": {"2018": 37583, "2019": 45100, "2020": 50498, "2021": 61229, "2022": 68883, "2023": 76536, "2024": 80363},
+"  3 هاتشباك": {"2018": 35647, "2019": 42776, "2020": 49906, "2021": 57035, "2022": 64165, "2023": 71294, "2024": 74859},
+" BT50": {"2018": 23300, "2019": 27960, "2020": 32620, "2021": 37280, "2022": 41940, "2023": 46600, "2024": 48930},
+" CX3": {"2018": 24532, "2019": 30459, "2020": 36743, "2021": 43137, "2022": 48587, "2023": 53986, "2024": 56685},
+" CX9": {"2018": 46929, "2019": 50957, "2020": 57703, "2021": 71474, "2022": 73831, "2023": 82035, "2024": 86137},
+"3 سيدان ": {"2018": 24749, "2019": 29699, "2020": 34649, "2021": 39598, "2022": 44548, "2023": 49498, "2024": 51973},
+"CX30": {"2018": 0, "2019": 0, "2020": 0, "2021": 51176, "2022": 57573, "2023": 63970, "2024": 67169},
+"CX5": {"2018": 31861, "2019": 38233, "2020": 46082, "2021": 53034, "2022": 55804, "2023": 62005, "2024": 65105},
+"CX80": {"2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 81396, "2024": 90447},
+"MX5": {"2018": 46672, "2019": 56007, "2020": 65341, "2021": 74676, "2022": 84010, "2023": 93345, "2024": 98012},
+
+        }, 
+
+
+
+        "ميتسوبيشي": {
+" اكسباندر ": {"2018": 23650, "2019": 28380, "2020": 33110, "2021": 37840, "2022": 42570, "2023": 47300, "2024": 49665},
+" اكلبس كروس": {"2018": 35960, "2019": 43152, "2020": 50344, "2021": 57536, "2022": 64728, "2023": 71920, "2024": 75516},
+" غمارة L 200": {"2018": 22270, "2019": 26724, "2020": 31178, "2021": 35632, "2022": 40086, "2023": 44540, "2024": 46767},
+" غمارتين 4X4 L 200 ": {"2018": 27700, "2019": 33288, "2020": 35924, "2021": 41056, "2022": 48384, "2023": 59320, "2024": 62286},
+" غمارتين L 200": {"2018": 23190, "2019": 27828, "2020": 32466, "2021": 37104, "2022": 41742, "2023": 46380, "2024": 48699},
+" مونتيرو": {"2018": 49190, "2019": 59028, "2020": 68866, "2021": 78704, "2022": 88542, "2023": 98380, "2024": 103299},
+"ASX": {"2018": 28912, "2019": 32124, "2020": 38878, "2021": 44432, "2022": 49986, "2023": 55540, "2024": 58317},
+"اتراج": {"2018": 14500, "2019": 17400, "2020": 20300, "2021": 23200, "2022": 26100, "2023": 29000, "2024": 30450},
+"اوتلاندر": {"2018": 41580, "2019": 49896, "2020": 58212, "2021": 66528, "2022": 74844, "2023": 83160, "2024": 87318},
+"باجيرو": {"2018": 53500, "2019": 64200, "2020": 74900, "2021": 85600, "2022": 96300, "2023": 107000, "2024": 112350},
+"سبيس ستار": {"2018": 12180, "2019": 14616, "2020": 17052, "2021": 19488, "2022": 21924, "2023": 24360, "2024": 25578},
+"كانتر ": {"2018": 39801, "2019": 46434, "2020": 53068, "2021": 59701, "2022": 66335, "2023": 73705, "2024": 77390},
+"لانسر LANCER": {"2018": 25550, "2019": 30660, "2020": 35770, "2021": 40880, "2022": 45990, "2023": 51100, "2024": 53655},
+"ميراج": {"2018": 12484, "2019": 14981, "2020": 17487, "2021": 19975, "2022": 22472, "2023": 24969, "2024": 26217},
+
+        },
+
+
+        "هوندا": {
+" CRV": {"2018": 46270, "2019": 55524, "2020": 64778, "2021": 74032, "2022": 83286, "2023": 92540, "2024": 97167},
+" HR-V": {"2018": 29570, "2019": 35484, "2020": 41398, "2021": 47312, "2022": 53226, "2023": 59140, "2024": 62097},
+" اوديسي ": {"2018": 43530, "2019": 52236, "2020": 60942, "2021": 69648, "2022": 78354, "2023": 87060, "2024": 91413},
+" بايلوت": {"2018": 60320, "2019": 72384, "2020": 84448, "2021": 96512, "2022": 108574, "2023": 120640, "2024": 126672},
+" سيتي ": {"2018": 23065, "2019": 27678, "2020": 32291, "2021": 36904, "2022": 41517, "2023": 46130, "2024": 48436},
+" سيفيك": {"2018": 30130, "2019": 36156, "2020": 42182, "2021": 48208, "2022": 54234, "2023": 60260, "2024": 63273},
+"اكورد": {"2018": 39340, "2019": 47208, "2020": 55076, "2021": 62944, "2022": 70812, "2023": 78680, "2024": 82614},
+
+        }, 
+
+
+
+        "لامبورجيني": {
+"HURACAN  هوراكان  ": {"2018": 359684, "2019": 431621, "2020": 503556, "2021": 575494, "2022": 647431, "2023": 716368, "2024": 752186},
+"URUS   اوروس": {"2018": 429561, "2019": 515473, "2020": 601385, "2021": 687298, "2022": 773210, "2023": 859122, "2024": 902078},
+"افنتادور   AVENTADOR": {"2018": 848200, "2019": 1017840, "2020": 1187480, "2021": 1357120, "2022": 1526760, "2023": 1696400, "2024": 1781220},
+
+        },
+
+
+        "ميني كوبر": {
+"JONH COOPER": {"2018": 62710, "2019": 75252, "2020": 87794, "2021": 100336, "2022": 112878, "2023": 125420, "2024": 131691},
+"ميني Clubman": {"2018": 55204, "2019": 66245, "2020": 77286, "2021": 88326, "2022": 99367, "2023": 110408, "2024": 115928},
+"ميني JCW": {"2018": 57185, "2019": 68622, "2020": 80059, "2021": 91496, "2022": 102933, "2023": 114370, "2024": 120089},
+"ميني كوبر ": {"2018": 36787, "2019": 44145, "2020": 51502, "2021": 58860, "2022": 66217, "2023": 73575, "2024": 77254},
+
+        },
+
+
+
+        "بيجو": {
+"301": {"2018": 19450, "2019": 23340, "2020": 27230, "2021": 31120, "2022": 35010, "2023": 38900, "2024": 40845},
+"2008": {"2018": 37497, "2019": 44996, "2020": 52495, "2021": 59994, "2022": 67494, "2023": 74993, "2024": 78743},
+"3008": {"2018": 49710, "2019": 59652, "2020": 69594, "2021": 79536, "2022": 89478, "2023": 99420, "2024": 104391},
+" اكسبرت ": {"2018": 44080, "2019": 52896, "2020": 61712, "2021": 70528, "2022": 79344, "2023": 88160, "2024": 92568},
+"508 جي تي ": {"2018": 52195, "2019": 62634, "2020": 73073, "2021": 83512, "2022": 93952, "2023": 104391, "2024": 108880},
+"بوكسر فان بضائع": {"2018": 34300, "2019": 41160, "2020": 48020, "2021": 54880, "2022": 61740, "2023": 68600, "2024": 72030},
+
+        },
+
+
+
+    // يمكن إضافة ماركات أخرى هنا
+
+
+
+};
+
+// Format number with thousands separator
+function formatNumber(num) {
+    return Math.round(num).toLocaleString('ar-SA');
+}
+
+// Format number rounded to nearest 100
+function formatNumberHundred(num) {
+    return Math.round(num / 100) * 100;
+}
+
+// باقي الدوال يجب أن تكون هنا في النطاق العام وليس داخل carsData
+// ... جميع الدوال الأخرى مثل showToast, updateProgress, calculateCosts, etc ...
+
+
+            // Show toast notification
+            function showToast(message, type = 'success') {
+                const existingToast = document.querySelector('.toast');
+                if (existingToast) {
+                    existingToast.remove();
+                }
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // Update progress bar
+            function updateProgress() {
+                const inputs = document.querySelectorAll('input[required], select[required]');
+                const filled = Array.from(inputs).filter(input => input.value.trim() !== '').length;
+                const percentage = (filled / inputs.length) * 100;
+                document.getElementById('progressFill').style.width = percentage + '%';
+
+                // Mark sections as completed
+                const carInputs = document.querySelectorAll('#carSection input[required], #carSection select[required]');
+                const carFilled = Array.from(carInputs).every(input => input.value.trim() !== '');
+                document.getElementById('carSection').classList.toggle('completed', carFilled);
+
+                const financialInputs = document.querySelectorAll('#financialSection input[required], #financialSection select[required]');
+                const financialFilled = Array.from(financialInputs).every(input => input.value.trim() !== '');
+                document.getElementById('financialSection').classList.toggle('completed', financialFilled);
+            }
+
+            /**
+             * التحقق من صحة جميع المدخلات الرقمية والمنطقية
+             * @returns {boolean} true إذا كانت جميع المدخلات صحيحة، false وإظهار رسالة خطأ إذا لا
+             */
+            function validateInput() {
+                let valid = true;
+                let messages = [];
+
+                // تحقق من القيم الرقمية المطلوبة
+                const requiredFields = [
+                    { el: document.getElementById('krwToUsd'), name: 'سعر صرف الدولار مقابل الوون', min: 1000, max: 2000 },
+                    { el: document.getElementById('usdToSar'), name: 'سعر صرف الريال مقابل الدولار', min: 3, max: 5 },
+                    { el: document.getElementById('carPriceKrw'), name: 'سعر السيارة بالوون', min: 1 },
+                    { el: document.getElementById('carPriceTable'), name: 'سعر السيارة حسب الجدول', min: 0 },
+                    { el: document.getElementById('officeCommission'), name: 'عمولة المكتب', min: 0 },
+                    { el: document.getElementById('customsFees'), name: 'رسوم التخليص الجمركي', min: 0 }
+                ];
+                requiredFields.forEach(field => {
+                    const val = parseFloat(field.el.value);
+                    if (isNaN(val) || val < field.min || (field.max && val > field.max)) {
+                        valid = false;
+                        messages.push(`⚠️ ${field.name} غير صحيح`);
+                        field.el.classList.add('input-error');
+                    } else {
+                        field.el.classList.remove('input-error');
+                    }
+                });
+
+                // تحقق من carSize
+                const carSize = document.getElementById('carSize');
+                if (!carSize.value) {
+                    valid = false;
+                    messages.push('⚠️ يرجى اختيار حجم السيارة');
+                    carSize.classList.add('input-error');
+                } else {
+                    carSize.classList.remove('input-error');
+                }
+
+                // تحقق من القيم السالبة
+                ['carPriceKrw', 'carPriceTable', 'officeCommission', 'customsFees', 'personalExtraFee'].forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el && el.value && parseFloat(el.value) < 0) {
+                        valid = false;
+                        messages.push(`⚠️ لا يسمح بقيم سالبة في ${el.previousElementSibling?.textContent || key}`);
+                        el.classList.add('input-error');
+                    } else if (el) {
+                        el.classList.remove('input-error');
+                    }
+                });
+
+                if (!valid && messages.length) {
+                    showToast(messages.join('\n'), 'error');
+                }
+                return valid;
+            }
+
+            // حساب جميع التكاليف التفصيلية للسيارة
+            function calculateCosts() {
+                // التحقق من صحة القيم الرقمية
+                const carPriceKrwInput = Math.max(0, parseFloat(document.getElementById('carPriceKrw').value) || 0);
+                const carPriceKrw = carPriceKrwInput * 1_000_000;
+                const exchangeRateKrw = Math.max(1, parseFloat(document.getElementById('krwToUsd').value) || 1);
+                const usdToSar = Math.max(0, parseFloat(document.getElementById('usdToSar').value) || 0);
+                const carPriceUsd = carPriceKrw / exchangeRateKrw;
+                const carPriceSar = carPriceUsd * usdToSar;
+                const carPriceTable = Math.max(0, parseFloat(document.getElementById('carPriceTable').value) || 0);
+                const taxAndCustoms = carPriceTable * 0.2;
+                // قيمة الشحن حسب حجم السيارة (قيمة افتراضية صغيرة)
+                let shippingCostValue = 5800;
+                if (document.getElementById('carSize').value === 'large') shippingCostValue = 6800;
+                // رسوم إضافية (بدون الرسوم الشخصية)
+                const customsFees = Math.max(0, parseFloat(document.getElementById('customsFees').value) || 0);
+                const officeCommission = Math.max(0, parseFloat(document.getElementById('officeCommission').value) || 0);
+                const additionalFeesValue = customsFees + officeCommission;
+                // الرسوم الشخصية (للاستخدام الداخلي فقط)
+                const personalExtraFee = Math.max(0, parseFloat(document.getElementById('personalExtraFee').value) || 0);
+
+                // المجموع النهائي (يشمل الرسوم الشخصية)
+                const total = carPriceSar + taxAndCustoms + additionalFeesValue + shippingCostValue + personalExtraFee;
+                // المجموع الظاهر للمستخدم (يشمل الرسوم الشخصية الآن)
+                const totalWithPersonal = total;
+
+                return {
+                    carPriceKrwInput,
+                    carPriceKrw,
+                    carPriceUsd,
+                    carPriceSar,
+                    taxAndCustoms,
+                    shippingCostValue,
+                    customsFees,
+                    officeCommission,
+                    additionalFeesValue,
+                    personalExtraFee,
+                    total, // يشمل الرسوم الشخصية
+                    totalWithPersonal // يشمل الرسوم الشخصية (للعرض والنسخ)
+                };
+            }
+
+            // Save form data to localStorage (معالجة دعم المتصفح والأخطاء)
+            function saveFormData() {
+                try {
+                    if (typeof window.localStorage === 'undefined') {
+                        console.warn('localStorage غير مدعوم في هذا المتصفح');
+                        return;
+                    }
+                    const form = document.getElementById('carForm');
+                    const data = {};
+                    Array.from(form.elements).forEach(el => {
+                        if (el.name) data[el.name] = el.value;
+                    });
+                    localStorage.setItem('carCostFormData', JSON.stringify(data));
+                } catch (err) {
+                    console.error('فشل حفظ البيانات في localStorage:', err);
+                }
+            }
+
+            // Restore form data from localStorage (معالجة دعم المتصفح والأخطاء)
+            function restoreFormData(showMsg = true) {
+                try {
+                    if (typeof window.localStorage === 'undefined') {
+                        console.warn('localStorage غير مدعوم في هذا المتصفح');
+                        return;
+                    }
+                    const data = localStorage.getItem('carCostFormData');
+                    if (data) {
+                        const obj = JSON.parse(data);
+                        const form = document.getElementById('carForm');
+                        Array.from(form.elements).forEach(el => {
+                            if (el.name && obj.hasOwnProperty(el.name)) {
+                                el.value = obj[el.name];
+                            }
+                        });
+                        updateProgress();
+                        calculateTotalCost();
+                        if (showMsg) showToast('✅ تم استرجاع البيانات بنجاح', 'success');
+                    }
+                } catch (err) {
+                    console.error('فشل استرجاع البيانات من localStorage:', err);
+                }
+            }
+
+            // Fetch exchange rate (mock function - replace with actual API call)
+            async function fetchExchangeRate() {
+                const loading = document.getElementById('loading');
+                loading.style.display = 'block';
+                try {
+                    // Mock API call - replace with actual implementation
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    // Simulate fetched rate
+                    const mockRate = 1340 + Math.random() * 50; // Random rate between 1340-1390
+                    document.getElementById('krwToUsd').value = mockRate.toFixed(0);
+                    showToast('تم جلب سعر الصرف بنجاح!', 'success');
+                    calculateTotalCost();
+                    saveFormData();
+                } catch (error) {
+                    console.error(error);
+                    showToast('فشل في جلب سعر الصرف. يرجى المحاولة لاحقًا.', 'error');
+                } finally {
+                    loading.style.display = 'none';
+                }
+            }
+
+            // Calculate total cost (موحد ويستخدم الدالة الجديدة)
+            function calculateTotalCost() {
+                try {
+                    if (!validateInput()) return;
+                    // حساب التكاليف الموحدة
+                    const costs = calculateCosts();
+
+                    // تحديث العرض (يشمل الرسوم الشخصية الآن)
+                    document.getElementById('totalCost').textContent = formatNumber(costs.totalWithPersonal);
+                    document.getElementById('carCostSAR').textContent = formatNumber(costs.carPriceSar) + ' ريال';
+                    document.getElementById('taxCost').textContent = formatNumber(costs.taxAndCustoms) + ' ريال';
+                    document.getElementById('shippingCost').textContent = formatNumber(costs.shippingCostValue) + ' ريال';
+                    // لا تظهر الرسوم الشخصية في العرض الفرعي (حسب التصميم)
+                    document.getElementById('additionalFees').textContent = formatNumber(costs.additionalFeesValue) + ' ريال';
+
+                    // تحريك الرقم
+                    const totalCostElement = document.getElementById('totalCost');
+                    totalCostElement.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        totalCostElement.style.transform = 'scale(1)';
+                    }, 200);
+
+                } catch (error) {
+                    console.error(error);
+                    showToast('حدث خطأ في الحساب. يرجى التحقق من البيانات المدخلة.', 'error');
+                }
+            }
+
+            /**
+             * نسخ الرسالة إلى الحافظة بطريقة حديثة مع fallback
+             * @param {boolean} rounded تقريب إلى أقرب مئة
+             */
+            function copyMessageToClipboard(rounded = false) {
+                try {
+                    if (!validateInput()) return;
+                    const form = document.getElementById('carForm');
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData);
+
+                    // حساب التكاليف الموحدة
+                    const costs = calculateCosts();
+
+                    // المجموع الظاهر فقط (يشمل الرسوم الشخصية الآن)
+                    const totalToShow = rounded ? formatNumberHundred(costs.totalWithPersonal) : Math.round(costs.totalWithPersonal);
+
+                    const message = `
+🚗 تفاصيل السيارة:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• نوع السيارة: ${data.carType}
+• عدد المقاعد: ${data.seats}
+• نوع الوقود: ${data.fuel}
+• الموديل: ${data.modelYear}
+• حجم المحرك: ${data.engineSize} CC
+• الممشى: ${Math.round(data.mileage)} كم
+• حالة البودي: ${data.bodyCondition}
+
+💰 التفاصيل المالية:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• سعر السيارة: ${costs.carPriceKrwInput.toFixed(2)} مليون وون
+• السعر بالريال: ${Math.round(costs.carPriceSar)} ريال سعودي
+• الضريبة والجمارك: ${Math.round(costs.taxAndCustoms)} ريال سعودي
+• رسوم التخليص: ${Math.round(costs.customsFees)} ريال سعودي
+• عمولة المكتب: ${Math.round(costs.officeCommission)} ريال سعودي
+• تكلفة الشحن: ${costs.shippingCostValue} ريال سعودي
+
+💎 إجمالي السعر الشامل: ${totalToShow} ريال سعودي
+`;
+
+                    // طريقة حديثة للنسخ مع fallback
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(message).then(() => {
+                            showToast('تم نسخ التفاصيل بنجاح!', 'success');
+                        }).catch((err) => {
+                            console.error('Clipboard API error:', err);
+                            fallbackCopyTextToClipboard(message);
+                        });
+                    } else {
+                        fallbackCopyTextToClipboard(message);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    showToast('حدث خطأ أثناء تجهيز الرسالة!', 'error');
+                }
+            }
+
+            // Fallback للنسخ التقليدي
+            function fallbackCopyTextToClipboard(text) {
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed'; // Prevent scrolling to bottom
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('تم نسخ التفاصيل بنجاح!', 'success');
+                    } catch (err) {
+                        console.error('execCommand copy failed:', err);
+                        showToast('لم يتم النسخ تلقائياً. انسخ يدوياً.', 'error');
+                    }
+                    document.body.removeChild(textarea);
+                } catch (err) {
+                    console.error('Fallback copy failed:', err);
+                    showToast('لم يتم النسخ تلقائياً. انسخ يدوياً.', 'error');
+                }
+            }
+
+            // Function to use the table price in the calculator
+            function useTablePrice() {
+                const priceValue = document.getElementById('priceValue').textContent;
+                const numberOnly = priceValue.replace(/[^0-9]/g, '');
+                if (numberOnly) {
+                    document.getElementById('carPriceTable').value = numberOnly;
+                    calculateTotalCost();
+                    saveFormData();
+                    showToast('تم تعبئة سعر السيارة حسب الجدول بنجاح', 'success');
+                }
+            }
+
+            // Event listeners
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('carForm');
+                
+                // Initialize car brands dropdown
+                populateBrands();
+                
+                // Initialize form event listeners
+                form.addEventListener('input', () => {
+                    updateProgress();
+                    calculateTotalCost();
+                    saveFormData();
+                });
+
+                // Calculate button
+                document.getElementById('calculate').addEventListener('click', calculateTotalCost);
+                
+                // Copy buttons
+                document.getElementById('copyMessage').addEventListener('click', () => copyMessageToClipboard(false));
+                document.getElementById('copyMessageRounded').addEventListener('click', () => copyMessageToClipboard(true));
+                
+                // Exchange rate button
+                document.getElementById('fetchExchangeRate').addEventListener('click', fetchExchangeRate);
+                
+                // Reset form button
+                document.getElementById('resetForm').addEventListener('click', () => {
+                    form.reset();
+                    document.getElementById('usdToSar').value = '3.77';
+                    document.getElementById('officeCommission').value = '2000';
+                    document.getElementById('customsFees').value = '1500';
+                    const personalExtraFee = document.getElementById('personalExtraFee');
+                    if (personalExtraFee) personalExtraFee.value = '';
+                    updateProgress();
+                    calculateTotalCost();
+                    saveFormData();
+                    showToast('تم إعادة تعيين النموذج', 'success');
+                });
+
+                // Restore data button
+                const restoreDataBtn = document.getElementById('restoreDataBtn');
+                if (restoreDataBtn) {
+                    restoreDataBtn.addEventListener('click', () => {
+                        restoreFormData(true);
+                    });
+                }
+
+                // Initialize
+                updateProgress();
+                calculateTotalCost();
+            });
+
+            // Function to populate car brands dropdown
+            function populateBrands() {
+                const brandSelect = document.getElementById('brand');
+                brandSelect.innerHTML = '<option value="">-- اختر العلامة التجارية --</option>';
+                
+                Object.keys(carsData).forEach(brand => {
+                    const option = document.createElement('option');
+                    option.value = brand;
+                    option.textContent = brand;
+                    brandSelect.appendChild(option);
+                });
+            }
+
+            // Function to update models dropdown
+            function updateModels() {
+                const brandSelect = document.getElementById('brand');
+                const modelSelect = document.getElementById('model');
+                const yearSelect = document.getElementById('year');
+                const priceDisplay = document.getElementById('priceDisplay');
+        
+                priceDisplay.classList.remove('show');
+                modelSelect.innerHTML = '<option value="">-- اختر الموديل --</option>';
+                modelSelect.disabled = true;
+                yearSelect.innerHTML = '<option value="">-- اختر السنة --</option>';
+                yearSelect.disabled = true;
+        
+                if (brandSelect.value) {
+                    const models = Object.keys(carsData[brandSelect.value]);
+                    models.forEach(model => {
+                        const trimmedModel = model.trim();
+                        const option = document.createElement('option');
+                        option.value = trimmedModel;
+                        option.textContent = trimmedModel;
+                        modelSelect.appendChild(option);
+                    });
+                    modelSelect.disabled = false;
+                }
+            }
+
+            // Function to update years dropdown
+            function updateYears() {
+                const brandSelect = document.getElementById('brand');
+                const modelSelect = document.getElementById('model');
+                const yearSelect = document.getElementById('year');
+                const priceDisplay = document.getElementById('priceDisplay');
+        
+                priceDisplay.classList.remove('show');
+                yearSelect.innerHTML = '<option value="">-- اختر السنة --</option>';
+                yearSelect.disabled = true;
+        
+                if (brandSelect.value && modelSelect.value) {
+                    // ابحث عن الموديل مع أو بدون مسافات
+                    const modelsObj = carsData[brandSelect.value];
+                    let modelKey = Object.keys(modelsObj).find(m => m.trim() === modelSelect.value.trim());
+                    if (!modelKey) return;
+                    const years = Object.keys(modelsObj[modelKey]);
+                    years.sort((a, b) => Number(b) - Number(a)); // ترتيب السنوات كأرقام
+                    years.forEach(year => {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        yearSelect.appendChild(option);
+                    });
+                    yearSelect.disabled = false;
+                }
+            }
+
+            // Function to show price
+            function showPrice() {
+                const brandSelect = document.getElementById('brand');
+                const modelSelect = document.getElementById('model');
+                const yearSelect = document.getElementById('year');
+                const priceDisplay = document.getElementById('priceDisplay');
+                const priceValue = document.getElementById('priceValue');
+                const carBrand = document.getElementById('carBrand');
+                const carModel = document.getElementById('carModel');
+                const carYear = document.getElementById('carYear');
+                const copyBtn = document.getElementById('copyPriceBtn');
+
+                if (brandSelect.value && modelSelect.value && yearSelect.value) {
+                    // ابحث عن الموديل مع أو بدون مسافات
+                    const modelsObj = carsData[brandSelect.value];
+                    let modelKey = Object.keys(modelsObj).find(m => m.trim() === modelSelect.value.trim());
+                    if (!modelKey) return;
+                    const price = modelsObj[modelKey][yearSelect.value];
+                    carBrand.textContent = brandSelect.value;
+                    carModel.textContent = modelSelect.value.trim();
+                    carYear.textContent = yearSelect.value;
+                    if (price) {
+                        priceValue.textContent = price.toString().replace(/[^0-9]/g, '');
+                        priceValue.className = 'price-value';
+                        priceDisplay.classList.add('show');
+                        copyBtn.style.display = 'inline-block';
+                    } else {
+                        priceValue.textContent = 'السعر غير متوفر';
+                        priceValue.className = 'no-price';
+                        priceDisplay.classList.add('show');
+                        copyBtn.style.display = 'none';
+                    }
+                    // أضف هذا السطر بعد تعيين carYear.textContent
+                    document.getElementById('modelYear').value = yearSelect.value;
+                } else {
+                    priceDisplay.classList.remove('show');
+                    copyBtn.style.display = 'none';
+                }
+            }
+        </script>
+    </body>
+</html>
